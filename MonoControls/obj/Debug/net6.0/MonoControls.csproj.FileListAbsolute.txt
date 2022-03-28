@@ -1,0 +1,12 @@
+C:\Users\vened\Downloads\Mudo - Copy\GitHub\MonoControls\MonoControls\bin\Debug\net6.0\MonoControls.deps.json
+C:\Users\vened\Downloads\Mudo - Copy\GitHub\MonoControls\MonoControls\bin\Debug\net6.0\MonoControls.dll
+C:\Users\vened\Downloads\Mudo - Copy\GitHub\MonoControls\MonoControls\bin\Debug\net6.0\ref\MonoControls.dll
+C:\Users\vened\Downloads\Mudo - Copy\GitHub\MonoControls\MonoControls\bin\Debug\net6.0\MonoControls.pdb
+C:\Users\vened\Downloads\Mudo - Copy\GitHub\MonoControls\MonoControls\obj\Debug\net6.0\MonoControls.csproj.AssemblyReference.cache
+C:\Users\vened\Downloads\Mudo - Copy\GitHub\MonoControls\MonoControls\obj\Debug\net6.0\MonoControls.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\vened\Downloads\Mudo - Copy\GitHub\MonoControls\MonoControls\obj\Debug\net6.0\MonoControls.AssemblyInfoInputs.cache
+C:\Users\vened\Downloads\Mudo - Copy\GitHub\MonoControls\MonoControls\obj\Debug\net6.0\MonoControls.AssemblyInfo.cs
+C:\Users\vened\Downloads\Mudo - Copy\GitHub\MonoControls\MonoControls\obj\Debug\net6.0\MonoControls.csproj.CoreCompileInputs.cache
+C:\Users\vened\Downloads\Mudo - Copy\GitHub\MonoControls\MonoControls\obj\Debug\net6.0\MonoControls.dll
+C:\Users\vened\Downloads\Mudo - Copy\GitHub\MonoControls\MonoControls\obj\Debug\net6.0\ref\MonoControls.dll
+C:\Users\vened\Downloads\Mudo - Copy\GitHub\MonoControls\MonoControls\obj\Debug\net6.0\MonoControls.pdb
