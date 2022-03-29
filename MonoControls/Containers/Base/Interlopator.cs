@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoControls.Containers.Base
 {
-    class Interlopator
+    public class Interlopator
     {
         double start = -1;
         private Func<float, float> function;

@@ -11,7 +11,7 @@ using MonoControls.Inputs.Mouse;
 
 namespace MonoControls.Containers.Helpers.Animatables
 {
-    class MenuShaped : Menu
+    public class MenuShaped : Menu
     {
         private Texture2D background;
         private Texture2D background_back;

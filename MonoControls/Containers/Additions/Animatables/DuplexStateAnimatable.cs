@@ -9,7 +9,7 @@ using MonoControls.Containers.Base;
 
 namespace MonoControls.Containers.Helpers.Animatables
 {
-    class DuplexStateAnimatable : Animatable
+    public class DuplexStateAnimatable : Animatable
     {
         public Texture2D texture_alt { get; private set; }
         public Color color_alt { get; private set; }//new Color(new Vector3(256, -1, -1));

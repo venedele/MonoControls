@@ -9,7 +9,7 @@ using MonoControls.Containers.Base;
 
 namespace MonoControls.Containers.Additions.Animatables
 {
-    internal class PulsingText : Animatable
+    public class PulsingText : Animatable
     {
         protected String next = null;
         protected Interlopator anim = null;

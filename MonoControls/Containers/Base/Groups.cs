@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MonoControls.Containers.Base
 {
-    class Quadruplets<T, T1, T2, T3>
+    public class Quadruplets<T, T1, T2, T3>
     {
         public T a;
         public T1 b;
@@ -17,7 +17,7 @@ namespace MonoControls.Containers.Base
             this.a = a; this.b = b; this.c = c; this.d = d;
         }
     }
-    class Triplet<T,T1,T2>
+    public class Triplet<T,T1,T2>
     {
         public T a;
         public T1 b;
@@ -27,7 +27,7 @@ namespace MonoControls.Containers.Base
             this.a = a; this.b = b; this.c = c;
         }
     }
-    class Pair<T, T1>
+    public class Pair<T, T1>
     {
         public T a;
         public T1 b;

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace MonoControls.Containers.Base
 {
     //If Loading management is required, use the Screen class
-    internal class AdvancedAnimatable : Animatable
+    public class AdvancedAnimatable : Animatable
     {
 
         public Game context;

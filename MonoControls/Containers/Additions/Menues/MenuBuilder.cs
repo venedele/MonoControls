@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework;
 
 namespace MonoControls.Containers.Helpers.Menues
 {
-    static class MenuBuilder 
+    public static class MenuBuilder 
     {
         public static MenuScreen Build_Interlopated_Back(Game context, Menu main, Screen Background, Interlopator a, Queue<Menu> menus = null)
         {

@@ -9,7 +9,7 @@ using MonoControls.Containers.Base;
 
 namespace MonoControls.Containers.Helpers.Screens
 {
-    class SolidBackground : Screen
+    public class SolidBackground : Screen
     {
         Animatable background = null;
         String loadneeded = null;

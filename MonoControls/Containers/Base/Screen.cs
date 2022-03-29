@@ -9,7 +9,7 @@ using MonoControls.Inputs.Mouse;
 
 namespace MonoControls.Containers.Base
 {
-    abstract class Screen
+    public abstract class Screen
     {
         public bool active = true;
 

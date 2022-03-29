@@ -11,7 +11,7 @@ using MonoControls.Inputs.Mouse;
 
 namespace MonoControls.Containers.Helpers.Menues
 {
-    class MenuScreen : Screen
+    public class MenuScreen : Screen
     {
         float alpha = 0f;
         LinkedList<Menu> container = new LinkedList<Menu>();

@@ -7,7 +7,7 @@ using MonoControls.Containers.Base;
 
 namespace MonoControls.Containers.Helpers.Screens
 {
-    static class ScreenHelpers
+    public static class ScreenHelpers
     {
         public static void AddLast(Screen s, Screen queue)
         {

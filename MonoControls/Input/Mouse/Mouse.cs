@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework;
 
 namespace MonoControls.Inputs.Mouse
 {
-    class Mouse_Handler
+    public class Mouse_Handler
     {
         public bool custom_root_compliable = false;
         Point customroot = new Point(0, 0);

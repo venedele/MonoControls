@@ -16,7 +16,7 @@ namespace MonoControls.Inputs.Mouse
         public bool right;
         public bool middle;
     }
-    class Mouse_Event
+    public class Mouse_Event
     {
         protected static int given_id = 0;
         

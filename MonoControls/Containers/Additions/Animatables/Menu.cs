@@ -11,7 +11,7 @@ using System.Diagnostics;
 
 namespace MonoControls.Containers.Helpers.Animatables
 {
-    class Menu : DuplexStateAnimatable
+    public class Menu : DuplexStateAnimatable
     {
         public bool spread = true;
         int selected_member = 0;
