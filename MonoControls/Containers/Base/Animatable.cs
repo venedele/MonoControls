@@ -59,6 +59,34 @@ namespace MonoControls.Containers.Base
         }
 
 
+        private bool centerCoords = false;
+        public bool isCenterCoord
+        {
+            get { return centerCoords; }
+        }
+        public void setCentralCoords(bool center_coords)
+        {
+            centerCoords = center_coords;
+        }
+
+        public float X
+        {
+            get { return location.X; }
+            set { location_c.X = value; if (event_handler != null) UpdateMouseevent(); foreach (Animatable chi in this) if (chi.event_handler != null) chi.UpdateMouseevent(); }
+        }
+
+        public float Y
+        {
+            get { return location.Y; }
+            set { location_c.Y = value; if (event_handler != null) UpdateMouseevent(); foreach (Animatable chi in this) if (chi.event_handler != null) chi.UpdateMouseevent(); }
+        }
+
+        public float Rotation
+        {
+            get { return rotation; }
+            set { rotation = value; }
+        }
+
         public int width
         {
             get { return size.X; }
@@ -99,24 +127,6 @@ namespace MonoControls.Containers.Base
 
         private Mouse_Event event_handler = null;
 
-        public float X
-        {
-            get { return location.X;  }
-            set { location_c.X = value; if (event_handler != null) UpdateMouseevent(); foreach (Animatable chi in this) if (chi.event_handler != null) chi.UpdateMouseevent(); }
-        }
-
-        public float Y
-        {
-            get { return location.Y; }
-            set { location_c.Y = value; if (event_handler != null) UpdateMouseevent(); foreach (Animatable chi in this) if (chi.event_handler != null) chi.UpdateMouseevent(); }
-        }
-
-        public float Rotation
-        {
-            get { return rotation; }
-            set { rotation = value;}
-        }
-
         public Animatable SetParent(Animatable parent)
         {
             this.parent = parent;
@@ -128,11 +138,6 @@ namespace MonoControls.Containers.Base
             return location + ((parent == null) ? new Vector2(0, 0) : parent.GetGlobalLocation());
         }
 
-        public void UpdateMouseevent()
-        {
-            Vector2 temp = GetGlobalLocation();
-            event_handler.region = new Rectangle(new Point((int)temp.X, (int)temp.Y), GetSize());
-        }
 
         public Animatable SetLocalCoords(Vector2 sub_location, Point sub_size)
         {
@@ -141,6 +146,23 @@ namespace MonoControls.Containers.Base
             UpdateScale();
             return this;
         }
+
+        public Point GetSize()
+        {
+            return (sub_size.X == 0 ? size : sub_size);
+        }
+
+        public Point GetContainerSize()
+        {
+            return size;
+        }
+
+
+
+
+
+
+
 
         public Animatable (Texture2D texture, Vector2 location, Point size, Color color, float rotation = 0, LinkedList<Animatable> parents = null)
         {
@@ -168,28 +190,22 @@ namespace MonoControls.Containers.Base
             :this(spriteFont, str, new Vector2(x, y), color, containerwidth, containerheight, rotation, parents)
         {}
 
+        protected Animatable()
+        {
+
+        }
+
+
+
+
+
+
         public Animatable Add(Animatable child)
         {
             drawing.WaitOne();
             this.AddLast(child.SetParent(this));
             drawing.ReleaseMutex();
             return this;
-        }
-
-        public Animatable SetEffect(SpriteEffects eff)
-        {
-            effects = eff;
-            return this;
-        }
-
-        private bool centerCoords = false;
-        public bool isCenterCoord
-        {
-            get { return centerCoords; }
-        }
-        public void setCentralCoords(bool center_coords)
-        {
-            centerCoords = center_coords;
         }
 
         public Animatable Add(LinkedList<Animatable> parents)
@@ -200,15 +216,21 @@ namespace MonoControls.Containers.Base
             drawing.ReleaseMutex();
             return this;
         }
+
+
+
+
+        public Animatable SetEffect(SpriteEffects eff)
+        {
+            effects = eff;
+            return this;
+        }
+
+
         public Animatable SetId(int id = 0)
         {
             this.id = id; 
             return this;
-        }
-
-        protected Animatable()
-        {
-
         }
 
         public Mouse_Event AddMouseEvents(Func<Animatable, MouseKeys, short> OnKeyChange, Func<Animatable, bool, short> OnHoverChange)
@@ -220,10 +242,14 @@ namespace MonoControls.Containers.Base
 
         public Animatable AddMouseEvents(Func<Animatable, MouseKeys, short> OnKeyChange, Func<Animatable, bool, short> OnHoverChange, Mouse_Handler attachto, bool priority = false)
         {
-            Vector2 temp = GetGlobalLocation();
-            event_handler = new Mouse_Event(new Rectangle(new Point((int)temp.X, (int)temp.Y), GetSize()), delegate (MouseKeys mouse) { if(OnKeyChange!=null)OnKeyChange.Invoke(this, mouse); return 0; }, delegate (bool hover) { if (OnHoverChange != null) OnHoverChange.Invoke(this, hover); return 0; });
-            attachto.Add(event_handler, priority);
+            attachto.Add(AddMouseEvents(OnKeyChange, OnHoverChange), priority);
             return this;
+        }
+
+        public void UpdateMouseevent()
+        {
+            Vector2 temp = GetGlobalLocation();
+            event_handler.region = new Rectangle(new Point((int)temp.X, (int)temp.Y), GetSize());
         }
 
         ~Animatable()
@@ -231,45 +257,20 @@ namespace MonoControls.Containers.Base
             Dispose();
         }
 
+
         public virtual void Dispose()
         {
 
         }
 
-        public Point GetSize()
-        {
-            return (sub_size.X == 0 ? size : sub_size);
-        }
 
-        public Point GetContainerSize()
-        {
-            return size;
-        }
 
         public virtual void Draw(SpriteBatch spriteBatch, Vector2 cord_root)
         {
-            drawing.WaitOne();
-            foreach (Animatable a in this)
-            {
-                a.Draw(spriteBatch, new Vector2(cord_root.X+location.X, cord_root.Y+location.Y), alpha); 
-            }
-            if(texture != null)
-            {
-                if (alpha > 0)
-                {
-                    Point temp = (sub_size.X == 0 ? size : sub_size);
-                    Vector2 s = (cord_root + location + sub_location) + (this.centerCoords?Vector2.Zero:new Vector2(temp.X / 2, temp.Y / 2));
-                    spriteBatch.Draw(texture, s, null, color * alpha, rotation, new Vector2(texture.Width / 2, texture.Height / 2),scale, effects, 1f);
-                }
-            }
-            else if (spriteFont != null)
-            {
-                Point temp = (sub_size.X == 0 ? size : sub_size);
-                if (alpha > 0)
-                    spriteBatch.DrawString(spriteFont, str, cord_root + location + sub_location + (this.centerCoords ? Vector2.Zero : new Vector2(temp.X / 2f, temp.Y / 2f)), color * alpha, rotation, new Vector2(size.X / 2, size.Y / 2), scale, SpriteEffects.None, 0f);
-            }
-            drawing.ReleaseMutex();
+            Draw(spriteBatch, cord_root, 1);
         }
+
+        //The alphal parameter is mainly used for Animatables to inherit their parents alpha
         public virtual void Draw(SpriteBatch spriteBatch, Vector2 cord_root, float alphal = 1)
         {
             drawing.WaitOne();
