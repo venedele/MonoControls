@@ -59,17 +59,26 @@ namespace MonoControls.Containers.Base
             this.Context = context;
         }
 
-        private bool custom_root_compliable_v = false;
+        private bool custom_root_compliable_v = true;
         public bool custom_root_compliable
         {
             get { return custom_root_compliable_v; }
             set { custom_root_compliable_v = value; OnCustomVectorChange(customroot_v, custom_root_compliable_v); }
         }
         private Vector2 customroot_v = new Vector2(0, 0);
+
+        
         public Vector2 customroot
         {
-            get { return customroot_v; }
+            get { return custom_root_compliable?customroot_v:Vector2.Zero; }
+            //TODO: Consider whether each element in the child stack should share a customroot, or each element should have its own independent one
             set { if(nested != null?nested.custom_root_compliable_v:false)nested.customroot = value; customroot_v = value; OnCustomVectorChange(customroot_v, custom_root_compliable); }
+        }
+
+        //Returns customroot without caring whether its used or not
+        public Vector2 getCustomRootInd()
+        {
+            return customroot_v;
         }
 
         protected virtual void OnCustomVectorChange(Vector2 CustomVector, bool custom_vector_compliable)
