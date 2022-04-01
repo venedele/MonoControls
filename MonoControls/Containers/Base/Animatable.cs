@@ -142,26 +142,31 @@ namespace MonoControls.Containers.Base
             return this;
         }
 
-
-        public Animatable (Texture2D texture, float x, float y, int width, int height, Color color, float rotation = 0f, LinkedList<Animatable> parents = null)
-        {
-            id = new Random().Next();
-            this.texture = texture; location = new Vector2(x, y); size = new Point(width, height); Rotation = rotation;
-            if(parents!=null)foreach (Animatable a in parents)
-                this.AddLast(a.SetParent(this));
-            alpha = color.A/(float)255;
-            color.A = 255; this.color = color;
-        }
-
         public Animatable (Texture2D texture, Vector2 location, Point size, Color color, float rotation = 0, LinkedList<Animatable> parents = null)
         {
             id = new Random().Next();
             this.texture = texture; this.location = location; this.size = size ; Rotation = rotation;
             if (parents != null) foreach (Animatable a in parents)
                 { this.AddLast(a.SetParent(this)); }
+            //Splitting the alpha value from the color for easier editing
             alpha = color.A/(float)255;
             color.A = 255; this.color = color;
         }
+
+        public Animatable(Texture2D texture, float x, float y, int width, int height, Color color, float rotation = 0f, LinkedList<Animatable> parents = null)
+          : this(texture, new Vector2(x, y), new Point(width, height), color, rotation, parents)
+        {}
+
+        public Animatable(SpriteFont spriteFont, String str, Vector2 location, Color color, int containerwidth = 0, int containerheight = 0, float rotation = 0, LinkedList<Animatable> parents = null)
+            : this(null, location, new Point(containerwidth, containerheight), color, rotation, parents)
+        {
+            this.spriteFont = spriteFont; 
+            this.str = str;
+        }
+
+        public Animatable(SpriteFont spriteFont, String str, float x, float y, Color color, int containerwidth = 0, int containerheight = 0, float rotation = 0, LinkedList<Animatable> parents = null)
+            :this(spriteFont, str, new Vector2(x, y), color, containerwidth, containerheight, rotation, parents)
+        {}
 
         public Animatable Add(Animatable child)
         {
@@ -199,24 +204,6 @@ namespace MonoControls.Containers.Base
         {
             this.id = id; 
             return this;
-        }
-
-        public Animatable (SpriteFont spriteFont, String str, Vector2 location, Color color, int containerwidth = 0, int containerheight = 0, float rotation = 0, LinkedList<Animatable> parents = null)
-        {
-            this.spriteFont = spriteFont; this.str = str; this.location = location;
-            size = new Point(containerwidth, containerheight);
-            if (parents != null) foreach (Animatable a in parents)
-                { this.AddLast(a.SetParent(this)); }
-            alpha = color.A / (float)255; color.A = 255; Rotation = rotation; this.color = color;
-        }
-
-        public Animatable(SpriteFont spriteFont, String str, float x, float y, Color color, int containerwidth = 0, int containerheight = 0, float rotation = 0, LinkedList<Animatable> parents = null)
-        {
-            this.spriteFont = spriteFont; this.str = str; this.location = new Vector2(x,y);
-            size = new Point(containerwidth, containerheight);
-            if (parents != null) foreach (Animatable a in parents)
-                { this.AddLast(a.SetParent(this)); }
-            alpha = color.A / (float)255; color.A = 255; Rotation = rotation; this.color = color;
         }
 
         protected Animatable()
