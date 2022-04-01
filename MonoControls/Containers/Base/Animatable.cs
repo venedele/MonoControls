@@ -264,6 +264,10 @@ namespace MonoControls.Containers.Base
         }
 
 
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            Draw(spriteBatch, Vector2.Zero);
+        }
 
         public virtual void Draw(SpriteBatch spriteBatch, Vector2 cord_root)
         {
