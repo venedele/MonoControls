@@ -9,7 +9,7 @@ using MonoControls.Containers.Base;
 
 namespace MonoControls.Containers.Additions
 {
-    internal class InterpolAnimatable : AdvancedAnimatable
+    public class InterpolAnimatable : AdvancedAnimatable
     {
         protected Interpolator alpha_ip;
         protected Interpolator size_ip;
