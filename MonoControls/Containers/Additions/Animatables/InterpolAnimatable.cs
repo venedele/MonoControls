@@ -33,10 +33,10 @@ namespace MonoControls.Containers.Additions
         {
             //TODO: Add color
             alpha_ip = alpha;
-            alpha_ip.Reset(this.alpha);
+            alpha_ip?.Reset(this.alpha);
             size_ip = size_scale;
             rotation_ip = rotation;
-            rotation_ip.Reset(this.Rotation);
+            rotation_ip?.Reset(this.Rotation);
             return this; 
         }
 
