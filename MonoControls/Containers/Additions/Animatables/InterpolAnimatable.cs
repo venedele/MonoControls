@@ -18,6 +18,29 @@ namespace MonoControls.Containers.Additions.Animatables
         protected int width_init = 0;
         protected int height_init = 0;
 
+        protected bool autoreset = false;
+        protected bool autoreset_reset_value = false;
+
+        protected bool finished
+        {
+            get
+            {
+                if (alpha_ip != null)
+                {
+                    if (!alpha_ip.finished) return false;
+                }
+                if (size_ip != null)
+                {
+                    if (!size_ip.finished) return false;
+                }
+                if (rotation_ip != null)
+                {
+                    if (!rotation_ip.finished) return false;
+                }
+                return true;
+            }
+        }
+
         public InterpolAnimatable(Texture2D texture, Vector2 location, Point size, Color color, float rotation = 0, LinkedList<Animatable> parents = null, Game context = null) : base(context, location, size, color, rotation, parents)
         {
             this.texture = texture;
@@ -28,6 +51,12 @@ namespace MonoControls.Containers.Additions.Animatables
         public InterpolAnimatable(Texture2D texture, float x, float y, int width, int height, Color color, float rotation = 0, LinkedList<Animatable> parents = null, Game context = null)
             : this(texture, new Vector2(x, y), new Point(width, height), color, rotation, parents, context)
         { }
+
+        public void setAutoReset(bool autoreset, bool autoreset_reset_value = false)
+        {
+            this.autoreset = autoreset;
+            this.autoreset_reset_value = autoreset_reset_value;
+        }
 
         public Animatable setInterpolators(Interpolator alpha, Interpolator size_scale, Interpolator rotation)
         {
@@ -96,6 +125,7 @@ namespace MonoControls.Containers.Additions.Animatables
                     width = (int)(width_init * value);
                     height = (int)(height_init * value);
                 }
+                if(autoreset) { if(finished) ResetAnimation(autoreset_reset_value); }
             }
         }
     }
