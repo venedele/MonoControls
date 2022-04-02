@@ -74,32 +74,44 @@ namespace MonoControls.Containers.Base
             this.wait_milis = wait_milis;
         }
 
-        public static Interpolator GetPredefined(Predefined interlop, float changeable = 0, double wait_millis = 0, float multiplier = 1, float scale = 1)
+        public static Interpolator GetPredefined(Predefined interlop, float changeable = 0, double wait_millis = 0, float multiplier = 1, float scale = 1, bool lock_maximum = false)
         {
             Func<float, float> result = null;
             switch (interlop) {
                 case Predefined.Accelerate:
                     result = delegate (float x)
                     {
-                        return x * x/5;
+                        float val = x * x/5;
+                        if (lock_maximum && val > 1)
+                            return DONE;
+                        return val;
                     };
                 break;
                 case Predefined.Decelerate:
                     result = delegate (float x)
                     {
-                        return -x * x / 5;
+                        float val = -x * x / 5;
+                        if (lock_maximum && val < -1)
+                            return DONE;
+                        return val;
                     };
                 break;
                 case Predefined.LinearUp:
                     result = delegate (float x)
                     {
-                        return 1*x;
+                        float val = 1*x;
+                        if (lock_maximum && val > 1)
+                            return DONE;
+                        return val;
                     };
                     break;
                 case Predefined.LinearDown:
                     result = delegate (float x)
                     {
-                        return -1*x;
+                        float val = -1 * x;
+                        if (lock_maximum && val < -1)
+                            return DONE;
+                        return val;
                     };
                     break;
                 case Predefined.Constant:
