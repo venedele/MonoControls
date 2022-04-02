@@ -27,7 +27,7 @@ namespace MonoControls.Containers.Base
             LoadContent(context.Content);
             foreach(Animatable child in this)
             {
-                if(child.GetType().IsAssignableFrom(typeof(AdvancedAnimatable)))
+                if(typeof(AdvancedAnimatable).IsAssignableFrom(child.GetType()))
                 {
                     ((AdvancedAnimatable)child).Load();
                 }
@@ -43,7 +43,7 @@ namespace MonoControls.Containers.Base
         {
             foreach (Animatable child in this)
             {
-                if (child.GetType().IsAssignableFrom(typeof(AdvancedAnimatable)))
+                if (typeof(AdvancedAnimatable).IsAssignableFrom(child.GetType()))
                 {
                     ((AdvancedAnimatable)child).Update(time);
                 }
