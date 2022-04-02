@@ -13,7 +13,7 @@ namespace MonoControls.Containers.Helpers.Menues
 {
     public static class MenuBuilder 
     {
-        public static MenuScreen Build_Interlopated_Back(Game context, Menu main, Screen Background, Interlopator a, Queue<Menu> menus = null)
+        public static MenuScreen Build_Interlopated_Back(Game context, Menu main, Screen Background, Interpolator a, Queue<Menu> menus = null)
         {
             Menu[] menu_c = new Menu[1+(menus==null?0:menus.Count)];
             menu_c[0] = main;
@@ -25,7 +25,7 @@ namespace MonoControls.Containers.Helpers.Menues
             return menu;
         }
 
-        public static MenuScreen Build_Shaped(Game context, Menu main, bool mainshaped, Screen background, Interlopator a = null, float alpha = 1, Queue<Pair<Menu,bool>> menus = null)
+        public static MenuScreen Build_Shaped(Game context, Menu main, bool mainshaped, Screen background, Interpolator a = null, float alpha = 1, Queue<Pair<Menu,bool>> menus = null)
         {
             Menu[] menu_c = new Menu[1 + (menus == null ? 0 : menus.Count)];
             menu_c[0] = mainshaped?new MenuShaped(main):main;

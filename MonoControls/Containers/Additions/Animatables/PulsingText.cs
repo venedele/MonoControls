@@ -12,7 +12,7 @@ namespace MonoControls.Containers.Additions.Animatables
     public class PulsingText : Animatable
     {
         protected String next = null;
-        protected Interlopator anim = null;
+        protected Interpolator anim = null;
         protected float alphascale = 0;
         protected float starting_alpha = 0;
         protected float starting_scale = 0;
@@ -39,7 +39,7 @@ namespace MonoControls.Containers.Additions.Animatables
             this.scalechange = scalechange;
             this.pulsetime = pulsetime;
             alphascale = (final_alpha - alpha);
-            anim = new Interlopator(delegate (float t) {
+            anim = new Interpolator(delegate (float t) {
                 float value = -t*(t-pulsetime)/(pulsetime*pulsetime/4);
                 if (value > 0) return value; else return 0;
             });

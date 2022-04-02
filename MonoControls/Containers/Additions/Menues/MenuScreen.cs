@@ -15,9 +15,9 @@ namespace MonoControls.Containers.Helpers.Menues
     {
         float alpha = 0f;
         LinkedList<Menu> container = new LinkedList<Menu>();
-        Interlopator r = null;
+        Interpolator r = null;
 
-        public MenuScreen(Game context, Menu[] contains, Interlopator a = null, float alpha = 0f, bool custom_root_compliable = true): base(context)
+        public MenuScreen(Game context, Menu[] contains, Interpolator a = null, float alpha = 0f, bool custom_root_compliable = true): base(context)
         {
             this.alpha = alpha;
             r = a;

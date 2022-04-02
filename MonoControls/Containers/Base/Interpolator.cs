@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoControls.Containers.Base
 {
-    public class Interlopator
+    public class Interpolator
     {
         double start = -1;
         private Func<float, float> function;
@@ -19,7 +19,7 @@ namespace MonoControls.Containers.Base
         {
             get { return start != -1; }
         }
-        public Interlopator(Func<float, float> function, float changeable = 0, double wait_milis = 0, float multiplier = 1, float scale = 1)
+        public Interpolator(Func<float, float> function, float changeable = 0, double wait_milis = 0, float multiplier = 1, float scale = 1)
         {
             this.function = function;
             this.wait_milis = wait_milis;
@@ -46,6 +46,8 @@ namespace MonoControls.Containers.Base
         public void Reset(float changeable = float.NaN)
         {
             total_ticks = 0;
+
+            //Checks whether the `changable`'s value is NaN
             if (!(changeable != changeable))
             {
                 this.changeable = changeable;
@@ -59,7 +61,7 @@ namespace MonoControls.Containers.Base
             this.wait_milis = wait_milis;
         }
 
-        public static Interlopator GetPredefined(Predefined interlop, float changeable = 0, double wait_millis = 0, float multiplier = 1, float scale = 1)
+        public static Interpolator GetPredefined(Predefined interlop, float changeable = 0, double wait_millis = 0, float multiplier = 1, float scale = 1)
         {
             Func<float, float> result = null;
             switch (interlop) {
@@ -96,7 +98,7 @@ namespace MonoControls.Containers.Base
                 default:
                     throw new FormatException();
             }
-            return new Interlopator(result, changeable, wait_millis, multiplier, scale);
+            return new Interpolator(result, changeable, wait_millis, multiplier, scale);
         }
 
         public enum Predefined
