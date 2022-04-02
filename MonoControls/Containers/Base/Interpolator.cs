@@ -69,6 +69,11 @@ namespace MonoControls.Containers.Base
             start = -1;
         }
 
+        public float getInitialValue()
+        {
+            return changeable_start;
+        }
+
         public void SetStartingInterval(double wait_milis)
         {
             this.wait_milis = wait_milis;
