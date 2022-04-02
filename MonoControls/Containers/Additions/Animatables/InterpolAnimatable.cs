@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoControls.Containers.Base;
 
-namespace MonoControls.Containers.Additions
+namespace MonoControls.Containers.Additions.Animatables
 {
     public class InterpolAnimatable : AdvancedAnimatable
     {
