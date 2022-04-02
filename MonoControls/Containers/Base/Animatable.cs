@@ -278,10 +278,6 @@ namespace MonoControls.Containers.Base
         public virtual void Draw(SpriteBatch spriteBatch, Vector2 cord_root, float alphal = 1)
         {
             drawing.WaitOne();
-            foreach (Animatable a in this)
-            {
-                a.Draw(spriteBatch, new Vector2(cord_root.X + location.X, cord_root.Y + location.Y), alphal*alpha);
-            }
             if (texture != null)
             {
                 if (alpha > 0)
@@ -297,6 +293,10 @@ namespace MonoControls.Containers.Base
                 Point temp = (sub_size.X == 0 ? size : sub_size);
                 if (alpha > 0)
                     spriteBatch.DrawString(spriteFont, str, cord_root + location + sub_location + (this.centerCoords ? Vector2.Zero : new Vector2(temp.X / 2f, temp.Y / 2f)), color * (alphal * alpha), rotation, new Vector2(size.X / 2, size.Y / 2), scale, SpriteEffects.None, 0f);
+            }
+            foreach (Animatable a in this)
+            {
+                a.Draw(spriteBatch, new Vector2(cord_root.X + location.X, cord_root.Y + location.Y), alphal * alpha);
             }
             drawing.ReleaseMutex();
         }
