@@ -47,6 +47,13 @@ namespace MonoControls.Containers.Additions
 
         public bool started = false;
 
+        public void StopAnimation()
+        {
+            started = false;
+        }
+
+
+        //If you wanna update the animated values, stop, change the values and then reset with reset_values = false;
         public void ResetAnimation(bool reset_values = false)
         {
             started = false;
