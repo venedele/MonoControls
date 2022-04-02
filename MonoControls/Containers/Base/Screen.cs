@@ -91,7 +91,7 @@ namespace MonoControls.Containers.Base
             mouse = new Mouse_Handler();
         }
 
-        public virtual Screen MouseState(bool blockMouse)
+        public virtual Screen setMouseState(bool blockMouse)
         {
             mouseBlocked = blockMouse;
             return this;
@@ -128,13 +128,7 @@ namespace MonoControls.Containers.Base
 
         public void Update(GameTime gameTime)
         {
-            if (!paused)
-            {
-                if (!(mouseBlocked || mouse == null))
-                    mouse.Update();
-                if (child != null) child.Update(gameTime, mouseBlocked);
-                Current_Update(gameTime);
-            }
+            Update(gameTime, false);
         }
 
         public void Update(GameTime gameTime, bool mouseblocked)
@@ -143,7 +137,7 @@ namespace MonoControls.Containers.Base
             {
                 if (!(mouseBlocked||mouseblocked || mouse == null))
                     mouse.Update();
-                if (child != null) child.Update(gameTime, mouseblocked);
+                if (child != null) child.Update(gameTime, mouseblocked||mouseBlocked);
                 Current_Update(gameTime);
             }
         }
