@@ -10,11 +10,18 @@ namespace MonoControls.Containers.Base
 {
     public class Interpolator
     {
+        public static float DONE = float.MaxValue;
         double start = -1;
         private Func<float, float> function;
         double wait_milis; int total_ticks=0; float scale; float multiplier;
         public float changeable { get; private set; }
         private float changeable_start;
+
+        protected bool finished_v = false;
+        public bool finished
+        {
+            get { return finished_v; }
+        }
         public bool started
         {
             get { return start != -1; }
@@ -34,10 +41,15 @@ namespace MonoControls.Containers.Base
             
             if (start == -1)
                 start = current.TotalGameTime.TotalMilliseconds;
+            if (finished_v)
+                return changeable;
             double total = (current.TotalGameTime.TotalMilliseconds - start);
             if (total > wait_milis)
             {
-                return changeable = changeable_start + multiplier * function.Invoke((++total_ticks) / scale);
+                float result = function.Invoke((++total_ticks) / scale);
+                //Sets and checks the value of finished_v in one line
+                if (!(finished_v = (result == DONE)))
+                 return changeable = changeable_start + multiplier * result;
             }
             return changeable;
             //TODO: Changes speed with targetfps. Workaround: Use desiredfps/targetfps coefficient in order to stabalise. 
@@ -53,6 +65,7 @@ namespace MonoControls.Containers.Base
                 this.changeable = changeable;
                 this.changeable_start = changeable;
             }
+            finished_v = false;
             start = -1;
         }
 
