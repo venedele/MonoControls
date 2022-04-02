@@ -66,45 +66,34 @@ namespace MonoControls.Containers.Helpers.Animatables
         public float startoffset { get; private set; } = 0; public float endoffset { get; private set; } = 0;
 
         public Menu(Type type, float x, float y, int width, int height, Color color, LinkedList<Pair<DuplexStateAnimatable, Func<Animatable, MouseKeys, short>>> parents, bool spread = true, float rotation = 0, float startoffset = 0, float endoffset = 0, bool generate = true)
-        {
-            this.startoffset = startoffset; this.endoffset = endoffset;
-            id = new Random().Next();
-            this.type = type; location = new Vector2(x, y); size = new Point(width, height); this.color = color; this.alpha = color.A / 255; color.A = 255; Rotation = rotation;
-            menu_event = this.AddMouseEvents(null, OnHover);
-            foreach (Pair<DuplexStateAnimatable, Func<Animatable, MouseKeys, short>> a in parents)
-                { this.AddLast(a.a.SetParent(this)); size_a += a.a.GetContainerSize(); Mouse_events.Enqueue(a.a.AddMouseEvents(a.b, OnHover)); }
-            this.spread = spread;
-            if(generate)
-            GenerateLayout();
-        }
+            : this(type, new Vector2(x, y), new Point(width, height), color, parents, spread, rotation, startoffset, endoffset, generate)
+        {}
 
         public Menu(Type type, Vector2 location, Point size, Color color, LinkedList<Pair<DuplexStateAnimatable, Func<Animatable, MouseKeys, short>>> parents, bool spread = true, float rotation = 0, float startoffset = 0, float endoffset = 0, bool generate = true)
+            :base(null, location, size, color, rotation, null)
         {
             this.startoffset = startoffset; this.endoffset = endoffset;
-            id = new Random().Next();
-            this.type = type; this.location = location; this.size = size; this.color = color; this.alpha = color.A / 255; color.A = 255; Rotation = rotation;
+            this.type = type; 
             menu_event = this.AddMouseEvents(null, OnHover);
             foreach (Pair<DuplexStateAnimatable, Func<Animatable, MouseKeys, short>> a in parents)
                 { this.AddLast(a.a.SetParent(this)); size_a += a.a.GetContainerSize(); Mouse_events.Enqueue(a.a.AddMouseEvents(a.b, OnHover)); }
             this.spread = spread;
             if(generate)
-            GenerateLayout();
+                GenerateLayout();
         }
 
         protected Menu(Type type, Vector2 location, Point size, Color color, LinkedList<Animatable> parents, Queue<Mouse_Event> parents_m, bool spread = true, float rotation = 0f, float startoffset = 0, float endoffset = 0, bool generate = true)
+            :this(type, location, size, color, null, spread, rotation, startoffset, endoffset, generate )
         {
-            this.startoffset = startoffset; this.endoffset = endoffset;
-            id = new Random().Next();
-            this.type = type; this.location = location; this.size = size; this.color = color; Rotation = rotation;
             Mouse_events = parents_m;
-            menu_event = this.AddMouseEvents(null, OnHover);
+            //TODO: Check if the menu class  supports other Animatables than DuplexStateAnimatables
             foreach (DuplexStateAnimatable a in parents)
             {
                 this.AddLast(a.SetParent(this)); size_a += a.GetContainerSize();
             }
-            this.spread = spread;
+            //Generate has to be called here, since the chained constructor never adds any children
             if(generate)
-            GenerateLayout();
+                GenerateLayout();
         }
 
         public void GenerateLayout()
