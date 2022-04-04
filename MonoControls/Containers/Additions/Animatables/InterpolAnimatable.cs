@@ -48,6 +48,13 @@ namespace MonoControls.Containers.Additions.Animatables
             height_init = height;
         }
 
+        public InterpolAnimatable(SpriteFont spriteFont, String str, Vector2 location, Point size, Color color, float rotation = 0, LinkedList<Animatable> parents = null, Game context = null) : base(context, location, size, color, rotation, parents)
+        {
+            this.spriteFont = spriteFont;
+            this.str = str;
+            width_init = 1;
+        }
+
         public InterpolAnimatable(Texture2D texture, float x, float y, int width, int height, Color color, float rotation = 0, LinkedList<Animatable> parents = null, Game context = null)
             : this(texture, new Vector2(x, y), new Point(width, height), color, rotation, parents, context)
         { }
@@ -122,8 +129,13 @@ namespace MonoControls.Containers.Additions.Animatables
                 if (size_ip != null)
                 {
                     float value = size_ip.Update(gameTime);
-                    width = (int)(width_init * value);
-                    height = (int)(height_init * value);
+                    if (texture == null)
+                        Scale = new Vector2((width_init + value), (width_init + value));
+                    else
+                    {
+                        width = (int)(width_init + value);
+                        height = (int)(height_init + value);
+                    }
                 }
                 if(autoreset) { if(finished) ResetAnimation(autoreset_reset_value); }
             }
