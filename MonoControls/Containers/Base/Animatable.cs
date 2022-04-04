@@ -133,11 +133,16 @@ namespace MonoControls.Containers.Base
             return this;
         }
 
+        //Rectangular coordinate
         public Vector2 GetGlobalLocation()
         {
-            return location + ((parent == null) ? new Vector2(0, 0) : parent.GetGlobalLocation());
+            return location - (isCenterCoord?(size.ToVector2()/2f):Vector2.Zero) + ((parent == null) ? new Vector2(0, 0) : parent.GetGlobalLocation());
         }
 
+        public Vector2 GetGlobalLocationCenter()
+        {
+            return GetGlobalLocation() + size.ToVector2() / 2f;
+        }
 
         public Animatable SetLocalCoords(Vector2 sub_location, Point sub_size)
         {
