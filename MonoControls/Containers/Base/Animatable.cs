@@ -51,7 +51,7 @@ namespace MonoControls.Containers.Base
             get { return location_c; }
             set { location_c = value;
                 UpdateLocationCache();
-                if (event_handler != null) UpdateMouseevent(); 
+                UpdateMouseevent(); 
                 foreach (Animatable chi in this) 
                     if (chi.event_handler != null) 
                         chi.UpdateMouseevent();
@@ -63,7 +63,7 @@ namespace MonoControls.Containers.Base
             get { return (size_c == Point.Zero && texture_c!=null)?texture_c.Bounds.Size:size_c; }
             set { size_c = value; 
                 UpdateLocationCache();
-                if (event_handler != null) UpdateMouseevent(); 
+                UpdateMouseevent(); 
                 foreach (Animatable chi in this) 
                     if (chi.event_handler != null) chi.UpdateMouseevent();
                 UpdateScale();
@@ -99,7 +99,7 @@ namespace MonoControls.Containers.Base
             get { return location.X; }
             set { location_c.X = value;
                 UpdateLocationCache();
-                if (event_handler != null) UpdateMouseevent(); 
+                UpdateMouseevent(); 
                 foreach (Animatable chi in this) 
                     if (chi.event_handler != null) 
                         chi.UpdateMouseevent();
@@ -112,7 +112,7 @@ namespace MonoControls.Containers.Base
             set { 
                 location_c.Y = value;
                 UpdateLocationCache();
-                if (event_handler != null) UpdateMouseevent(); 
+                UpdateMouseevent(); 
                 foreach (Animatable chi in this) 
                     if (chi.event_handler != null) chi.UpdateMouseevent();
             }
@@ -287,8 +287,11 @@ namespace MonoControls.Containers.Base
         //Mouse event locations are inaccurate when animatable is rotated
         public void UpdateMouseevent()
         {
-            Vector2 temp = GetGlobalLocation();
-            event_handler.region = new Rectangle(new Point((int)temp.X, (int)temp.Y), GetSize());
+            if (event_handler != null)
+            {
+                Vector2 temp = GetGlobalLocation();
+                event_handler.region = new Rectangle(new Point((int)temp.X, (int)temp.Y), GetSize());
+            }
         }
 
         ~Animatable()
