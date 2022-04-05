@@ -91,6 +91,7 @@ namespace MonoControls.Containers.Base
         {
             centerCoords = center_coords;
             UpdateLocationCache();
+            UpdateMouseevent();
         }
 
         public float X
