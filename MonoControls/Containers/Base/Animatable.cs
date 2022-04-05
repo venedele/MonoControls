@@ -110,6 +110,10 @@ namespace MonoControls.Containers.Base
             parent_rotate = rotation;
             centercoord = centralRelativeCoords;
             UpdateRotation();
+            foreach (Animatable child in this)
+            {
+                child.RotateContainer(this.rotation + parent_rotate, size.ToVector2()/2f);
+            }
         }
 
 
@@ -284,6 +288,7 @@ namespace MonoControls.Containers.Base
             return this;
         }
 
+        //TODO: Call rotation update on add
         public Animatable Add(LinkedList<Animatable> parents)
         {
             drawing.WaitOne();
@@ -375,7 +380,7 @@ namespace MonoControls.Containers.Base
             {
                 //Children always positioned from left corner
                 //TODO: Add child center positioning
-                a.Draw(spriteBatch, new Vector2(cord_root.X + Xposition_left, cord_root.Y + Yposition_top), alphal * alpha);
+                a.Draw(spriteBatch, cord_root + draw_location_cached - size.ToVector2()/2f, alphal * alpha);
             }
             drawing.ReleaseMutex();
         }
