@@ -13,13 +13,13 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="bin\Debug\net6.0\Content\**" />
+	  <Compile Remove="bin\**" />
 	  <Compile Remove="Content\bin\**" />
 	  <Compile Remove="Content\obj\**" />
-	  <EmbeddedResource Remove="bin\Debug\net6.0\Content\**" />
+	  <EmbeddedResource Remove="bin\**" />
 	  <EmbeddedResource Remove="Content\bin\**" />
 	  <EmbeddedResource Remove="Content\obj\**" />
-	  <None Remove="bin\Debug\net6.0\Content\**" />
+	  <None Remove="bin\**" />
 	  <None Remove="Content\bin\**" />
 	  <None Remove="Content\obj\**" />
 	</ItemGroup>
@@ -33,7 +33,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="bin\Debug\net6.0\" />
 	  <Folder Include="Content\" />
 	</ItemGroup>
 

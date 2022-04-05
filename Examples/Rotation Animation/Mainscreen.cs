@@ -40,6 +40,7 @@ namespace RotationAnimation
             rotator.setCentralCoords(true);
             rotator.setInterpolators(null, null, Interpolator.GetPredefined(Interpolator.Predefined.LinearUp, 0, 10, 0.01f));
             rotator.Add(new Animatable(texture, new Vector2(0, 0), new Point(50, 50), Color.Violet));
+            rotator.Add(new Animatable(content.Load<SpriteFont>("Font"), "0°", new Vector2(10, 10), Color.White));
 
             button = new DuplexStateAnimatable(texture, screen_width/2f, screen_height-100, 100, 50, Color.Black);
             button.setCentralCoords(true);
@@ -52,6 +53,7 @@ namespace RotationAnimation
         protected override void Current_Update(GameTime gameTime)
         {
             rotator.Update(gameTime);
+            rotator.Last.Value.str = Math.Floor(rotator.Rotation*180/Math.PI%360)+ "°";
         }
 
         protected override void Current_Draw(SpriteBatch spriteBatch)
