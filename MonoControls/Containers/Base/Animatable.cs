@@ -49,14 +49,37 @@ namespace MonoControls.Containers.Base
         private Vector2 location_c;
         public Vector2 location {
             get { return location_c; }
-            set { location_c = value; if (event_handler != null) UpdateMouseevent(); foreach (Animatable chi in this) if (chi.event_handler != null) chi.UpdateMouseevent(); }
+            set { location_c = value;
+                UpdateLocationCache();
+                if (event_handler != null) UpdateMouseevent(); 
+                foreach (Animatable chi in this) 
+                    if (chi.event_handler != null) 
+                        chi.UpdateMouseevent();
+            }
         }
         private Point size_c;
         public Point size
         {
             get { return (size_c == Point.Zero && texture_c!=null)?texture_c.Bounds.Size:size_c; }
-            set { size_c = value; if (event_handler != null) UpdateMouseevent(); foreach (Animatable chi in this) if (chi.event_handler != null) chi.UpdateMouseevent(); UpdateScale(); }
+            set { size_c = value; 
+                UpdateLocationCache();
+                if (event_handler != null) UpdateMouseevent(); 
+                foreach (Animatable chi in this) 
+                    if (chi.event_handler != null) chi.UpdateMouseevent();
+                UpdateScale();
+                
+            }
         }
+
+
+
+        private Vector2 draw_location_cached;
+        private void UpdateLocationCache()
+        {
+            Point temp = GetSize();
+            draw_location_cached = (location + sub_location) + (this.centerCoords ? Vector2.Zero : new Vector2(temp.X / 2, temp.Y / 2));
+        }
+
 
 
         private bool centerCoords = false;
@@ -67,18 +90,31 @@ namespace MonoControls.Containers.Base
         public void setCentralCoords(bool center_coords)
         {
             centerCoords = center_coords;
+            UpdateLocationCache();
         }
 
         public float X
         {
             get { return location.X; }
-            set { location_c.X = value; if (event_handler != null) UpdateMouseevent(); foreach (Animatable chi in this) if (chi.event_handler != null) chi.UpdateMouseevent(); }
+            set { location_c.X = value;
+                UpdateLocationCache();
+                if (event_handler != null) UpdateMouseevent(); 
+                foreach (Animatable chi in this) 
+                    if (chi.event_handler != null) 
+                        chi.UpdateMouseevent();
+            }
         }
 
         public float Y
         {
             get { return location.Y; }
-            set { location_c.Y = value; if (event_handler != null) UpdateMouseevent(); foreach (Animatable chi in this) if (chi.event_handler != null) chi.UpdateMouseevent(); }
+            set { 
+                location_c.Y = value;
+                UpdateLocationCache();
+                if (event_handler != null) UpdateMouseevent(); 
+                foreach (Animatable chi in this) 
+                    if (chi.event_handler != null) chi.UpdateMouseevent();
+            }
         }
 
         public float Rotation
@@ -90,13 +126,19 @@ namespace MonoControls.Containers.Base
         public int width
         {
             get { return size.X; }
-            protected set { size_c.X = value; }
+            protected set { 
+                size_c.X = value;
+                UpdateLocationCache();
+            }
         }
 
         public int height
         {
             get { return size.Y; }
-            protected set { size_c.Y = value; }
+            protected set { 
+                size_c.Y = value;
+                UpdateLocationCache();
+            }
         }
 
 
@@ -148,7 +190,8 @@ namespace MonoControls.Containers.Base
         {
             this.sub_location = sub_location;
             this.sub_size = sub_size;
-            UpdateScale();
+            UpdateScale(); //Fix problems with sub animatables
+            UpdateLocationCache();
             return this;
         }
 
@@ -287,17 +330,14 @@ namespace MonoControls.Containers.Base
             {
                 if (alpha > 0)
                 {
-                    Point temp = (sub_size.X == 0 ? size : sub_size);
-                    Vector2 s = (cord_root + location + sub_location) + (this.centerCoords ? Vector2.Zero : new Vector2(temp.X / 2, temp.Y / 2));
-                    
-                        spriteBatch.Draw(texture, s, null, color * (alphal * alpha), rotation, new Vector2(texture.Width / 2, texture.Height / 2), scale, effects, 1f);
+                        spriteBatch.Draw(texture, cord_root+draw_location_cached, null, color * (alphal * alpha), rotation, new Vector2(texture.Width / 2, texture.Height / 2), scale, effects, 1f);
                 }
             }
             else if (spriteFont != null)
             {
                 Point temp = (sub_size.X == 0 ? size : sub_size);
                 if (alpha > 0)
-                    spriteBatch.DrawString(spriteFont, str, cord_root + location + sub_location + (this.centerCoords ? Vector2.Zero : new Vector2(temp.X / 2f, temp.Y / 2f)), color * (alphal * alpha), rotation, new Vector2(size.X / 2, size.Y / 2), scale, SpriteEffects.None, 0f);
+                    spriteBatch.DrawString(spriteFont, str, cord_root + draw_location_cached, color * (alphal * alpha), rotation, new Vector2(size.X / 2, size.Y / 2), scale, SpriteEffects.None, 0f);
             }
             foreach (Animatable a in this)
             {
