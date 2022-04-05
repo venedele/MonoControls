@@ -27,7 +27,7 @@ namespace MonoControls.Containers.Base
         {
             if (texture != null)
             {
-                Point temp = (sub_size.X == 0 ? size : sub_size);
+                Point temp = size;
                 scale = new Vector2(temp.X / (float)(texture.Width), temp.Y / (float)(texture.Height));
             }
             else scale = new Vector2(1f, 1f);
@@ -77,7 +77,7 @@ namespace MonoControls.Containers.Base
         private void UpdateLocationCache()
         {
             Point temp = GetSize();
-            draw_location_cached = (location + sub_location) + (this.centerCoords ? Vector2.Zero : new Vector2(temp.X / 2, temp.Y / 2));
+            draw_location_cached = (location + (this.centerCoords ? Vector2.Zero : new Vector2(temp.X / 2, temp.Y / 2)));
         }
 
 
@@ -162,9 +162,6 @@ namespace MonoControls.Containers.Base
             get { return location.Y + (this.centerCoords ? height / 2.0f:0); }
         }
 
-
-        Vector2 sub_location = new Vector2(0, 0);
-        Point sub_size = new Point(0, 0);
         private float rotation = 0.0f;
 
         private Mouse_Event event_handler = null;
@@ -186,18 +183,9 @@ namespace MonoControls.Containers.Base
             return GetGlobalLocation() + size.ToVector2() / 2f;
         }
 
-        public Animatable SetLocalCoords(Vector2 sub_location, Point sub_size)
-        {
-            this.sub_location = sub_location;
-            this.sub_size = sub_size;
-            UpdateScale(); //Fix problems with sub animatables
-            UpdateLocationCache();
-            return this;
-        }
-
         public Point GetSize()
         {
-            return (sub_size.X == 0 ? size : sub_size);
+            return size;
         }
 
         public Point GetContainerSize()
@@ -335,7 +323,6 @@ namespace MonoControls.Containers.Base
             }
             else if (spriteFont != null)
             {
-                Point temp = (sub_size.X == 0 ? size : sub_size);
                 if (alpha > 0)
                     spriteBatch.DrawString(spriteFont, str, cord_root + draw_location_cached, color * (alphal * alpha), rotation, new Vector2(size.X / 2, size.Y / 2), scale, SpriteEffects.None, 0f);
             }
