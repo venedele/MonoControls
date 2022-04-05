@@ -77,7 +77,7 @@ namespace MonoControls.Containers.Base
         private void UpdateLocationCache()
         {
             Point temp = GetSize();
-            draw_location_cached = (location + (this.centerCoords ? Vector2.Zero : new Vector2(temp.X / 2, temp.Y / 2)));
+            draw_location_cached = (location + (this.centerCoords ? Vector2.Zero : new Vector2(temp.X / 2f, temp.Y / 2f)));
         }
 
 
@@ -282,6 +282,8 @@ namespace MonoControls.Containers.Base
             return this;
         }
 
+
+        //Mouse event locations are inaccurate when animatable is rotated
         public void UpdateMouseevent()
         {
             Vector2 temp = GetGlobalLocation();
@@ -318,17 +320,19 @@ namespace MonoControls.Containers.Base
             {
                 if (alpha > 0)
                 {
-                        spriteBatch.Draw(texture, cord_root+draw_location_cached, null, color * (alphal * alpha), rotation, new Vector2(texture.Width / 2, texture.Height / 2), scale, effects, 1f);
+                        spriteBatch.Draw(texture, cord_root+draw_location_cached, null, color * (alphal * alpha), rotation, new Vector2(texture.Width / 2f, texture.Height / 2f), scale, effects, 1f);
                 }
             }
             else if (spriteFont != null)
             {
                 if (alpha > 0)
-                    spriteBatch.DrawString(spriteFont, str, cord_root + draw_location_cached, color * (alphal * alpha), rotation, new Vector2(size.X / 2, size.Y / 2), scale, SpriteEffects.None, 0f);
+                    spriteBatch.DrawString(spriteFont, str, cord_root + draw_location_cached, color * (alphal * alpha), rotation, new Vector2(size.X / 2f, size.Y / 2f), scale, SpriteEffects.None, 0f);
             }
             foreach (Animatable a in this)
             {
-                a.Draw(spriteBatch, new Vector2(cord_root.X + location.X, cord_root.Y + location.Y), alphal * alpha);
+                //Children always positioned from left corner
+                //TODO: Add child center positioning
+                a.Draw(spriteBatch, new Vector2(cord_root.X + Xposition_left, cord_root.Y + Yposition_top), alphal * alpha);
             }
             drawing.ReleaseMutex();
         }
