@@ -38,13 +38,13 @@ namespace RotationAnimation
             float screen_width = context.Window.ClientBounds.Width;
 
             rotator = new InterpolAnimatable(texture, new Vector2(screen_width/2f, 100), new Point(100, 100), Color.Gray);
-            rotator.setCentralCoords(true);
+            rotator.setCenterCoord(true);
             rotator.setInterpolators(null, null, Interpolator.GetPredefined(Interpolator.Predefined.LinearUp, 0, 10, 0.01f));
             rotator.Add(new Animatable(texture, new Vector2(0, 0), new Point(50, 50), Color.Violet));
             rotator.First.Value.Add(new Animatable(content.Load<SpriteFont>("Font"), "0°", new Vector2(10, 10), Color.White));
 
             button = new DuplexStateAnimatable(texture, screen_width/2f, screen_height-100, 100, 50, Color.Black);
-            button.setCentralCoords(true);
+            button.setCenterCoord(true);
             button.CreateState(null, Color.Green.ToVector4(), 0.8f);
             button.Add(new Animatable(content.Load<SpriteFont>("Font"), "Start", new Vector2(10, 10), Color.White));
             this.CreateMouseHandler();

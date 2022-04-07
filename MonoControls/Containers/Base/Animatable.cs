@@ -78,8 +78,8 @@ namespace MonoControls.Containers.Base
 
         private Vector2 draw_location_lin_cached;
         private Vector2 draw_location_cached;
-        private float parent_rotate = 0f;
-        private Vector2 centercoord = Vector2.Zero;
+        private float parent_rotation = 0f;
+        private Vector2 parent_rotation_origin = Vector2.Zero;
 
         private void UpdateLocationCache()
         {
@@ -90,29 +90,29 @@ namespace MonoControls.Containers.Base
 
         protected void UpdateRotation()
         {
-            if (parent_rotate == 0)
+            if (parent_rotation == 0)
             {
                 draw_location_cached = draw_location_lin_cached;
             }
             else
             {
-                Vector2 rel_coord = draw_location_lin_cached - centercoord;
+                Vector2 rel_coord = draw_location_lin_cached - parent_rotation_origin;
                 Vector2 trans_coord = Vector2.Zero;
-                trans_coord.X = (float)Math.Cos(parent_rotate) * rel_coord.X - (float)Math.Sin(parent_rotate) * rel_coord.Y;
-                trans_coord.Y = (float)Math.Sin(parent_rotate) * rel_coord.X + (float)Math.Cos(parent_rotate) * rel_coord.Y;
-                draw_location_cached = trans_coord + centercoord;
+                trans_coord.X = (float)Math.Cos(parent_rotation) * rel_coord.X - (float)Math.Sin(parent_rotation) * rel_coord.Y;
+                trans_coord.Y = (float)Math.Sin(parent_rotation) * rel_coord.X + (float)Math.Cos(parent_rotation) * rel_coord.Y;
+                draw_location_cached = trans_coord + parent_rotation_origin;
 
             }
         }
 
-        public void RotateContainer(float rotation, Vector2 centralRelativeCoords)
+        public void RotateContainer(float rotation, Vector2 rotation_origin)
         {
-            parent_rotate = rotation;
-            centercoord = centralRelativeCoords;
+            parent_rotation = rotation;
+            parent_rotation_origin = rotation_origin;
             UpdateRotation();
             foreach (Animatable child in this)
             {
-                child.RotateContainer(this.rotation + parent_rotate, size.ToVector2()/2f);
+                child.RotateContainer(this.rotation + parent_rotation, size.ToVector2()/2f);
             }
         }
 
@@ -125,7 +125,7 @@ namespace MonoControls.Containers.Base
         {
             get { return centerCoords; }
         }
-        public void setCentralCoords(bool center_coords)
+        public void setCenterCoord(bool center_coords)
         {
             centerCoords = center_coords;
             UpdateLocationCache();
@@ -162,7 +162,7 @@ namespace MonoControls.Containers.Base
             set { rotation = value; 
                 foreach(Animatable child in this)
                 {
-                    child.RotateContainer(rotation + parent_rotate, size.ToVector2()/2f);
+                    child.RotateContainer(rotation + parent_rotation, size.ToVector2()/2f);
                 }
             }
         }
@@ -368,13 +368,13 @@ namespace MonoControls.Containers.Base
             {
                 if (alpha > 0)
                 {
-                        spriteBatch.Draw(texture, cord_root+draw_location_cached, null, color * (alphal * alpha), rotation + parent_rotate, new Vector2(texture.Width / 2f, texture.Height / 2f), scale, effects, 1f);
+                        spriteBatch.Draw(texture, cord_root+draw_location_cached, null, color * (alphal * alpha), rotation + parent_rotation, new Vector2(texture.Width / 2f, texture.Height / 2f), scale, effects, 1f);
                 }
             }
             else if (spriteFont != null)
             {
                 if (alpha > 0)
-                    spriteBatch.DrawString(spriteFont, str, cord_root + draw_location_cached, color * (alphal * alpha), rotation + parent_rotate, new Vector2(size.X / 2f, size.Y / 2f), scale, SpriteEffects.None, 0f);
+                    spriteBatch.DrawString(spriteFont, str, cord_root + draw_location_cached, color * (alphal * alpha), rotation + parent_rotation, new Vector2(size.X / 2f, size.Y / 2f), scale, SpriteEffects.None, 0f);
             }
             foreach (Animatable a in this)
             {
