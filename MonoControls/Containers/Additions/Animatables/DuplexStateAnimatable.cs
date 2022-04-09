@@ -45,6 +45,7 @@ namespace MonoControls.Containers.Helpers.Animatables
         public virtual void SwapStates(bool recursive)
         {
             if (recursive)
+                //TODO: Fix crash if the entire stack is not DuplexStateAnimatable
                 foreach (DuplexStateAnimatable child in this)
                 {
                     try
