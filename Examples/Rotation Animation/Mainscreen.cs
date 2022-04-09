@@ -43,6 +43,11 @@ namespace RotationAnimation
             rotator.Add(new Animatable(texture, new Vector2(0, 0), new Point(50, 50), Color.Violet));
             rotator.First.Value.Add(new Animatable(content.Load<SpriteFont>("Font"), "0°", new Vector2(10, 10), Color.White));
 
+            rotator.Add(new Animatable(texture, new Vector2(50, 50), new Point(50, 50), Color.Black*0.8f, 0.785f));
+            rotator.Last.Value.setCenterCoord(true);
+            rotator.Last.Value.Add(new Animatable(texture, new Vector2(25, 25), new Point(30, 30), Color.Gray, 0.785f));
+            rotator.Last.Value.First.Value.setCenterCoord(true);
+
             button = new DuplexStateAnimatable(texture, screen_width/2f, screen_height-100, 100, 50, Color.Black);
             button.setCenterCoord(true);
             button.CreateState(null, Color.Green.ToVector4(), 0.8f);
