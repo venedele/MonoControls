@@ -213,6 +213,14 @@ namespace MonoControls.Containers.Base
         public Animatable SetParent(Animatable parent)
         {
             this.parent = parent;
+            float rotation = 0.0f;
+            Vector2 origin = Vector2.Zero;
+            if (parent != null)
+            {
+                rotation = parent.rotation;
+                origin = parent.size.ToVector2() / 2f;
+            }
+            RotateContainer(rotation, origin);
             return this;
         }
 
