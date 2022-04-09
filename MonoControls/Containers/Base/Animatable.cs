@@ -296,6 +296,17 @@ namespace MonoControls.Containers.Base
             return this;
         }
 
+        public void RemoveAnim(int index)
+        {
+            this.RemoveAnim(this.ElementAt(index));
+        }
+
+        public void RemoveAnim(Animatable anim)
+        {
+            anim.SetParent(null);
+            this.Remove(anim);
+        }
+
         //TODO: Call rotation update on add
         public Animatable Add(LinkedList<Animatable> parents)
         {
