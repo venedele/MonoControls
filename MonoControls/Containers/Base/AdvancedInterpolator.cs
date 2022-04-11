@@ -56,9 +56,13 @@ namespace MonoControls.Containers.Base
             this.acceleration = 0;
         }
 
-        private int direction = 1;
+        public AdvancedInterpolator(Func<double, AdvancedInterpolator, float> driver, float startingvalue = 0)
+        {
+            this.driver = driver;
+            Reset(startingvalue);
+        }
 
-        public void Update(GameTime time)
+        public float Update(GameTime time)
         {
             if(startTime < 0)
             {
@@ -67,8 +71,6 @@ namespace MonoControls.Containers.Base
                 {
                     startTime = (time.TotalGameTime.TotalMilliseconds);
                 }
-                else return;
-                direction = target < starting ? -1 : 1;
             }
             else
             {
@@ -76,7 +78,7 @@ namespace MonoControls.Containers.Base
                 if(value == DONE)
                 {
                     Reset();
-                    return;
+                    return current;
                 }
                 switch (controlledValue)
                 {
@@ -94,6 +96,7 @@ namespace MonoControls.Containers.Base
                         break;
                 }
             }
+            return this.current;
             
         }
 
