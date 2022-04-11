@@ -25,6 +25,7 @@ namespace MonoControls.Containers.Base
         public Settables controlledValue;
 
         private double startTime = -1.0f;
+        public double animation_delay_ms = 0.0;
 
         public enum Settables
         {
@@ -56,9 +57,10 @@ namespace MonoControls.Containers.Base
             this.acceleration = 0;
         }
 
-        public AdvancedInterpolator(Func<double, AdvancedInterpolator, float> driver, float startingvalue = 0)
+        public AdvancedInterpolator(Func<double, AdvancedInterpolator, float> driver, float startingvalue = 0, double animation_delay_ms = 0)
         {
             this.driver = driver;
+            this.animation_delay_ms = animation_delay_ms;
             Reset(startingvalue);
         }
 
@@ -74,7 +76,9 @@ namespace MonoControls.Containers.Base
             }
             else
             {
-                float value = driver(time.TotalGameTime.TotalMilliseconds - startTime, this);
+                double time_m = time.TotalGameTime.TotalMilliseconds - startTime;
+                if (time_m <= animation_delay_ms) return this.current;
+                float value = driver(time_m, this);
                 if(value == DONE)
                 {
                     Reset();
