@@ -15,11 +15,16 @@ namespace MonoControls.Containers.Base
         public float Target
         {
             get { return target; }
+            set { setTarget(value);  }
         }
         public float current { get; private set; } = 0.0f;
         public float velocity { get; private set; } = 0.0f;
         public float acceleration { get; private set; } = 0.0f;
 
+        public bool Running
+        {
+            get { return this.current != target;  }
+        }
 
         Func<double, AdvancedInterpolator, float> driver; 
         public Settables controlledValue;
