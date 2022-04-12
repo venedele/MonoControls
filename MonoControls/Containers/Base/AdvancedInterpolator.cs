@@ -63,10 +63,11 @@ namespace MonoControls.Containers.Base
             this.acceleration = 0;
         }
 
-        public AdvancedInterpolator(Func<double, AdvancedInterpolator, float> driver, float startingvalue = 0, double animation_delay_ms = 0)
+        public AdvancedInterpolator(Func<double, AdvancedInterpolator, float> driver, Settables controlledValue, float startingvalue = 0, double animation_delay_ms = 0)
         {
             this.driver = driver;
             this.animation_delay_ms = animation_delay_ms;
+            this.controlledValue = controlledValue;
             Reset(startingvalue);
         }
 
@@ -124,7 +125,7 @@ namespace MonoControls.Containers.Base
                 if (sender.target - sender.current > 0.0001f) return (sender.target - sender.starting) / time_up;
                 else if (sender.target - sender.current < -0.0001f) return -(sender.target - sender.starting) / time_down;
                 else return DONE_SET_FINAL;
-            }, starting_value, animation_delay_ms);
+            }, Settables.Velocity, starting_value, animation_delay_ms);
         }
 
         public static AdvancedInterpolator GetLinear(float rate_up, float rate_down, float starting_value = 0, bool converge = false, double animation_delay_ms = 0)
@@ -132,7 +133,7 @@ namespace MonoControls.Containers.Base
             return new AdvancedInterpolator(delegate (double time, AdvancedInterpolator sender) {
                 if (sender.target - sender.starting > 0.0f) if (converge && Math.Abs(sender.target - sender.current) < rate_up) return DONE_SET_FINAL; else return rate_up;
                 if (converge && Math.Abs(sender.target - sender.current) < rate_down) return DONE_SET_FINAL;  else return rate_down;
-            }, starting_value, animation_delay_ms);
+            }, Settables.Velocity, starting_value, animation_delay_ms);
         }
 
         public static AdvancedInterpolator GetExponential()
