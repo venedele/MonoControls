@@ -127,9 +127,12 @@ namespace MonoControls.Containers.Base
             }, starting_value, animation_delay_ms);
         }
 
-        public static AdvancedInterpolator GetLinear(float rate_up, float rate_down, bool converge = false)
+        public static AdvancedInterpolator GetLinear(float rate_up, float rate_down, float starting_value = 0, bool converge = false, double animation_delay_ms = 0)
         {
-            return null;
+            return new AdvancedInterpolator(delegate (double time, AdvancedInterpolator sender) {
+                if (sender.target - sender.starting > 0.0f) if (converge && Math.Abs(sender.target - sender.current) < rate_up) return DONE_SET_FINAL; else return rate_up;
+                if (converge && Math.Abs(sender.target - sender.current) < rate_down) return DONE_SET_FINAL;  else return rate_down;
+            }, starting_value, animation_delay_ms);
         }
 
         public static AdvancedInterpolator GetExponential()
