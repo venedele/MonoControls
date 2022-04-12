@@ -136,15 +136,21 @@ namespace MonoControls.Containers.Base
             }, Settables.Velocity, starting_value, animation_delay_ms);
         }
 
-        public static AdvancedInterpolator GetExponential()
+        //Final value will be reached after around 5*time_constant (value reset at 5.5*time_constant)
+        public static AdvancedInterpolator GetExponential(float time_constant_ms, float starting_value = 0, double animation_delay_ms_l = 0)
         {
-            return null;
+            return new AdvancedInterpolator(delegate (double time, AdvancedInterpolator sender)
+            {
+                if(time > 5.5f*time_constant_ms) return DONE_SET_FINAL;
+                //Functions as a low pass filter with a given time constant
+                return (sender.target-sender.current)*(time_constant_ms/1000f);
+            }, Settables.Velocity, starting_value, animation_delay_ms_l);
         }
 
-        public static AdvancedInterpolator GetExponentialTuned()
+        /*public static AdvancedInterpolator GetExponentialTuned()
         {
             return null;
-        }
+        }*/
 
     }
 }
