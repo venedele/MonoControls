@@ -10,6 +10,7 @@ namespace MonoControls.Containers.Base
     public class AdvancedInterpolator
     {
         public const float DONE = float.MaxValue;
+        public const float DONE_SET_FINAL = float.MinValue;
         private float starting = 0.0f;
         private float target = 0.0f;
         public float Target
@@ -71,7 +72,7 @@ namespace MonoControls.Containers.Base
 
         public float Update(GameTime time)
         {
-            if(startTime < 0)
+            if (startTime < 0)
             {
                 //Comparison should be safe, because an explisit assignment to the same value is performed when resetting. 
                 if (Running)
@@ -84,9 +85,9 @@ namespace MonoControls.Containers.Base
                 double time_m = time.TotalGameTime.TotalMilliseconds - startTime;
                 if (time_m <= animation_delay_ms) return this.current;
                 float value = driver(time_m, this);
-                if(value == DONE)
+                if (value == DONE || value == DONE_SET_FINAL)
                 {
-                    Reset();
+                    Reset(value == DONE_SET_FINAL?target:float.NaN);
                     return current;
                 }
                 switch (controlledValue)
@@ -112,6 +113,33 @@ namespace MonoControls.Containers.Base
         public void ForceStart()
         {
             if (!Running) target = current + 0.0000000001f;
+        }
+
+
+        //TODO: Split InterpolatorData to a separate structure, to ensure good access integrity
+        //Get Linear transition interpolator
+        public static AdvancedInterpolator GetLinear(float time_up, float time_down, float starting_value = 0, double animation_delay_ms = 0)
+        {
+            return new AdvancedInterpolator(delegate(double time, AdvancedInterpolator sender) {
+                if (sender.target - sender.current > 0.0001f) return (sender.target - sender.starting) / time_up;
+                else if (sender.target - sender.current < -0.0001f) return -(sender.target - sender.starting) / time_down;
+                else return DONE_SET_FINAL;
+            }, starting_value, animation_delay_ms);
+        }
+
+        public static AdvancedInterpolator GetLinear(float rate_up, float rate_down, bool converge = false)
+        {
+            return null;
+        }
+
+        public static AdvancedInterpolator GetExponential()
+        {
+            return null;
+        }
+
+        public static AdvancedInterpolator GetExponentialTuned()
+        {
+            return null;
         }
 
     }
