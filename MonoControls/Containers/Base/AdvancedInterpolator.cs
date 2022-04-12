@@ -74,7 +74,7 @@ namespace MonoControls.Containers.Base
             if(startTime < 0)
             {
                 //Comparison should be safe, because an explisit assignment to the same value is performed when resetting. 
-                if (current != target)
+                if (Running)
                 {
                     startTime = (time.TotalGameTime.TotalMilliseconds);
                 }
@@ -107,6 +107,11 @@ namespace MonoControls.Containers.Base
             }
             return this.current;
             
+        }
+
+        public void ForceStart()
+        {
+            if (!Running) target = current + 0.0000000001f;
         }
 
     }
