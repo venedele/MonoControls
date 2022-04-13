@@ -128,7 +128,7 @@ namespace MonoControls.Containers.Base
             }, Settables.Velocity, starting_value, animation_delay_ms);
         }
 
-        public static AdvancedInterpolator GetLinear(float rate_up, float rate_down, float starting_value = 0, bool converge = false, double animation_delay_ms = 0)
+        public static AdvancedInterpolator GetLinear(float rate_up, float rate_down, bool converge, float starting_value = 0, double animation_delay_ms = 0)
         {
             return new AdvancedInterpolator(delegate (double time, AdvancedInterpolator sender) {
                 if (sender.target - sender.starting > 0.0f) if (converge && Math.Abs(sender.target - sender.current) < rate_up) return DONE_SET_FINAL; else return rate_up;
@@ -144,6 +144,17 @@ namespace MonoControls.Containers.Base
                 if(time > 5.5f*time_constant_ms) return DONE_SET_FINAL;
                 //Functions as a low pass filter with a given time constant
                 return (sender.target-sender.current)*(time_constant_ms/1000f);
+            }, Settables.Velocity, starting_value, animation_delay_ms_l);
+        }
+
+        public static AdvancedInterpolator GetExponentialConst(float rate_per_s, float starting_value = 0, double animation_delay_ms_l = 0)
+        {
+            return new AdvancedInterpolator(delegate (double time, AdvancedInterpolator sender)
+            {
+                double time_constant_ms = (sender.target - sender.current) / rate_per_s;
+                if (time > 5.5f * time_constant_ms) return DONE_SET_FINAL;
+                //Functions as a low pass filter with a given time constant
+                return (float)((sender.target - sender.current) * (time_constant_ms));
             }, Settables.Velocity, starting_value, animation_delay_ms_l);
         }
 
