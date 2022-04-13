@@ -142,6 +142,8 @@ namespace MonoControls.Containers.Base
             Reset(startingvalue);
         }
 
+
+        private double last_update = 0;
         /// <summary>
         /// Updates and returns interpolated value. 
         /// </summary>
@@ -160,6 +162,7 @@ namespace MonoControls.Containers.Base
             else
             {
                 double time_m = time.TotalGameTime.TotalMilliseconds - startTime;
+                double timestep = (time.TotalGameTime.TotalMilliseconds - last_update)/1000.0;
                 if (time_m <= animation_delay_ms) return this.current;
                 float value = driver(time_m, this);
                 if (value == DONE || value == DONE_SET_FINAL)
@@ -174,15 +177,16 @@ namespace MonoControls.Containers.Base
                         break;
                     case Settables.Velocity:
                         this.velocity = value;
-                        this.current += this.velocity;
+                        this.current += this.velocity*(float)timestep;
                         break;
                     case Settables.Acceleration:
                         this.acceleration = value;
-                        this.velocity += acceleration;
-                        this.current += velocity;
+                        this.velocity += this.acceleration*(float)timestep;
+                        this.current += this.velocity*(float)timestep;
                         break;
                 }
             }
+            last_update = time.TotalGameTime.TotalMilliseconds;
             return this.current;
             
         }
