@@ -109,7 +109,7 @@ namespace MonoControls.Containers.Base
         /// <param name="value">End Value for the controller variable. If left empty, the current value is set </param>
         public void Reset(float value = float.NaN)
         {
-            startTime = 0;
+            startTime = -1;
             if (float.IsNaN(value))
             {
                 value = current;
@@ -151,7 +151,7 @@ namespace MonoControls.Containers.Base
         /// <returns>Updated interpolated value</returns>
         public float Update(GameTime time)
         {
-            if (startTime < 0)
+            if (startTime <= 0)
             {
                 //Comparison should be safe, because an explisit assignment to the same value is performed when resetting. 
                 if (Running)
@@ -252,7 +252,7 @@ namespace MonoControls.Containers.Base
             {
                 if(time > 5.5f*time_constant_ms) return DONE_SET_FINAL;
                 //Functions as a low pass filter with a given time constant
-                return (sender.target-sender.current)*(time_constant_ms/1000f);
+                return (sender.target-sender.current)/(time_constant_ms/1000f);
             }, Settables.Velocity, starting_value, animation_delay_ms_l);
         }
 
@@ -267,10 +267,10 @@ namespace MonoControls.Containers.Base
         {
             return new AdvancedInterpolator(delegate (double time, AdvancedInterpolator sender)
             {
-                double time_constant_ms = (sender.target - sender.current) / rate_per_s;
-                if (time > 5.5f * time_constant_ms) return DONE_SET_FINAL;
+                double time_constant_ms = (sender.target - sender.starting) / rate_per_s;
+                if (time > 5.5f * 1000f * time_constant_ms) return DONE_SET_FINAL;
                 //Functions as a low pass filter with a given time constant
-                return (float)((sender.target - sender.current) * (time_constant_ms));
+                return ((sender.target - sender.current) / (float)(time_constant_ms));
             }, Settables.Velocity, starting_value, animation_delay_ms_l);
         }
 
