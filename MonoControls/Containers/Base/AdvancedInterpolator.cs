@@ -75,6 +75,11 @@ namespace MonoControls.Containers.Base
         private double startTime = -1.0f;
 
         /// <summary>
+        /// Represents time interval between the previous two updates (seconds)
+        /// </summary>
+        public double timestep { get; private set; } = 0.0f;
+
+        /// <summary>
         /// Defines the animation intial delay. 
         /// </summary>
         public double animation_delay_ms = 0.0;
@@ -162,7 +167,7 @@ namespace MonoControls.Containers.Base
             else
             {
                 double time_m = time.TotalGameTime.TotalMilliseconds - startTime;
-                double timestep = (time.TotalGameTime.TotalMilliseconds - last_update)/1000.0;
+                timestep = (time.TotalGameTime.TotalMilliseconds - last_update)/1000.0;
                 if (time_m <= animation_delay_ms) return this.current;
                 float value = driver(time_m, this);
                 if (value == DONE || value == DONE_SET_FINAL)
@@ -225,8 +230,8 @@ namespace MonoControls.Containers.Base
         /// <summary>
         /// Builds a Linear constant rate interpolator.
         /// </summary>
-        /// <param name="rate_up">Rate for ascending changes</param>
-        /// <param name="rate_down">Rate for descending changes</param>
+        /// <param name="rate_up">Rate for ascending changes in units/second</param>
+        /// <param name="rate_down">Rate for descending changes in units/second</param>
         /// <param name="converge">Determines whether interpolator should stop at target value</param>
         /// <param name="starting_value">Starting value for interpolated variable</param>
         /// <param name="animation_delay_ms">Initial intepolation delay</param>
@@ -234,8 +239,12 @@ namespace MonoControls.Containers.Base
         public static AdvancedInterpolator GetLinear(float rate_up, float rate_down, bool converge, float starting_value = 0, double animation_delay_ms = 0)
         {
             return new AdvancedInterpolator(delegate (double time, AdvancedInterpolator sender) {
-                if (sender.target - sender.starting > 0.0f) if (converge && Math.Abs(sender.target - sender.current) < rate_up) return DONE_SET_FINAL; else return rate_up;
-                if (converge && Math.Abs(sender.target - sender.current) < rate_down) return DONE_SET_FINAL;  else return rate_down;
+                if (sender.target - sender.starting > 0.0f) { 
+                    if (converge && Math.Abs(sender.target - sender.current) < rate_up*sender.timestep) return DONE_SET_FINAL; 
+                    else return rate_up; 
+                }
+                if (converge && Math.Abs(sender.target - sender.current) < rate_down * sender.timestep) return DONE_SET_FINAL;  
+                else return rate_down;
             }, Settables.Velocity, starting_value, animation_delay_ms);
         }
 
