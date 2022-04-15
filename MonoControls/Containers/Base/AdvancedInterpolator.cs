@@ -102,6 +102,7 @@ namespace MonoControls.Containers.Base
         /// <param name="acc_init">Inital value for second order derivative</param>
         public void setTarget(float target, float v_init = 0, float acc_init = 0)
         {
+            if (this.target == target) return;
             Reset();
             this.target = target;
             velocity = v_init;
