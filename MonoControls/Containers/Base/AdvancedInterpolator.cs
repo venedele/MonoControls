@@ -148,7 +148,6 @@ namespace MonoControls.Containers.Base
         }
 
 
-        private double last_update = 0;
         /// <summary>
         /// Updates and returns interpolated value. 
         /// </summary>
@@ -167,7 +166,7 @@ namespace MonoControls.Containers.Base
             else
             {
                 double time_m = time.TotalGameTime.TotalMilliseconds - startTime;
-                timestep = (time.TotalGameTime.TotalMilliseconds - last_update)/1000.0;
+                timestep = time.ElapsedGameTime.TotalSeconds;
                 if (time_m <= animation_delay_ms) return this.current;
                 float value = driver(time_m, this);
                 if (value == DONE || value == DONE_SET_FINAL)
@@ -191,7 +190,6 @@ namespace MonoControls.Containers.Base
                         break;
                 }
             }
-            last_update = time.TotalGameTime.TotalMilliseconds;
             return this.current;
             
         }
