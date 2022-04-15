@@ -220,9 +220,11 @@ namespace MonoControls.Containers.Base
         public static AdvancedInterpolator GetLinear(float time_up, float time_down, float starting_value = 0, double animation_delay_ms = 0)
         {
             return new AdvancedInterpolator(delegate(double time, AdvancedInterpolator sender) {
-                if (sender.target - sender.current > 0.0001f) return (sender.target - sender.starting) / (time_up /1000f);
-                else if (sender.target - sender.current < -0.0001f) return -(sender.target - sender.starting) / (time_down/1000f);
-                else return DONE_SET_FINAL;
+                float rate = DONE_SET_FINAL;
+                if (sender.target - sender.current > 0.0001f) rate = (sender.target - sender.starting) / (time_up /1000f);
+                else if (sender.target - sender.current < -0.0001f) rate = (sender.target - sender.starting) / (time_down/1000f);
+                if(Math.Abs(sender.target - sender.current) < Math.Abs(rate) * sender.timestep) rate = DONE_SET_FINAL;
+                return rate;
             }, Settables.Velocity, starting_value, animation_delay_ms);
         }
 
@@ -243,7 +245,7 @@ namespace MonoControls.Containers.Base
                     else return rate_up; 
                 }
                 if (converge && Math.Abs(sender.target - sender.current) < rate_down * sender.timestep) return DONE_SET_FINAL;  
-                else return rate_down;
+                else return -rate_down;
             }, Settables.Velocity, starting_value, animation_delay_ms);
         }
 
@@ -275,7 +277,7 @@ namespace MonoControls.Containers.Base
         {
             return new AdvancedInterpolator(delegate (double time, AdvancedInterpolator sender)
             {
-                double time_constant_ms = (sender.target - sender.starting) / rate_per_s;
+                double time_constant_ms = Math.Abs((sender.target - sender.starting) / rate_per_s);
                 if (time > 5.5f * 1000f * time_constant_ms) return DONE_SET_FINAL;
                 //Functions as a low pass filter with a given time constant
                 return ((sender.target - sender.current) / (float)(time_constant_ms));
