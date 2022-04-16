@@ -203,7 +203,7 @@ namespace MonoControls.Containers.Base
         /// </remarks>
         public void ForceStart(int direction = 1)
         {
-            if (!Running) target = current + Math.Sign(direction)*0.0000000001f;
+            if (!Running) Target = current + Math.Sign(direction)*0.0001f;
         }
 
 
