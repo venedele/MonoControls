@@ -11,33 +11,43 @@ namespace MonoControls.Containers.Additions.Animatables
 {
     public class InterpolAnimatable : AdvancedAnimatable
     {
-        protected Interpolator alpha_ip;
-        protected Interpolator size_ip;
-        protected Interpolator rotation_ip;
+        protected AdvancedInterpolator alpha_ip;
+        protected AdvancedInterpolator size_ip;
+        protected AdvancedInterpolator rotation_ip;
 
         protected int width_init = 0;
         protected int height_init = 0;
 
-        protected bool autoreset = false;
-        protected bool autoreset_reset_value = false;
+        new public float Rotation
+        {
+            get { return base.Rotation;  }
+            set { if (rotation_ip == null) base.Rotation = value; else rotation_ip.setTarget(value); }
+        }
 
-        protected bool finished
+        //TOOD: Consider overriding instead of new
+        new public float alpha
+        {
+            get { return base.alpha; }
+            set { if (alpha_ip == null) base.alpha = value; else alpha_ip.setTarget(value); }
+        }
+
+        public bool Running
         {
             get
             {
                 if (alpha_ip != null)
                 {
-                    if (!alpha_ip.finished) return false;
+                    if (alpha_ip.Running) return true;
                 }
                 if (size_ip != null)
                 {
-                    if (!size_ip.finished) return false;
+                    if (size_ip.Running) return true;
                 }
                 if (rotation_ip != null)
                 {
-                    if (!rotation_ip.finished) return false;
+                    if (rotation_ip.Running) return true;
                 }
-                return true;
+                return false;
             }
         }
 
@@ -59,85 +69,86 @@ namespace MonoControls.Containers.Additions.Animatables
             : this(texture, new Vector2(x, y), new Point(width, height), color, rotation, parents, context)
         { }
 
-        public void setAutoReset(bool autoreset, bool autoreset_reset_value = false)
-        {
-            this.autoreset = autoreset;
-            this.autoreset_reset_value = autoreset_reset_value;
-        }
-
-        public Animatable setInterpolators(Interpolator alpha, Interpolator size_scale, Interpolator rotation)
+        public Animatable setInterpolators(AdvancedInterpolator alpha, AdvancedInterpolator size_scale, AdvancedInterpolator rotation)
         {
             //TODO: Add color
             alpha_ip = alpha;
             alpha_ip?.Reset(this.alpha);
             size_ip = size_scale;
+            size_ip?.Reset(1f);
             rotation_ip = rotation;
             rotation_ip?.Reset(this.Rotation);
             return this; 
         }
 
+        private bool animation_running = true;
+
         public void StartAnimation()
         {
-            started = true;
+            animation_running = true;
         }
 
-        public bool started = false;
-
-        public void StopAnimation()
+        public void ForceStartAnimation()
         {
-            started = false;
+            animation_running = true;
+            alpha_ip?.ForceStart();
+            size_ip?.ForceStart();
+            rotation_ip?.ForceStart();
+        }
+
+        public void PauseAnimation()
+        {
+            animation_running = false;
         }
 
 
         //If you wanna update the animated values, stop, change the values and then reset with reset_values = false;
         public void ResetAnimation(bool reset_values = false)
         {
-            started = false;
             if (reset_values)
             {
-                alpha = alpha_ip.getInitialValue();
-                alpha_ip.Reset();
-                size_ip.Reset();
+                alpha = alpha_ip.starting;
+                alpha_ip?.Reset();
+                size_ip?.Reset();
                 width = width_init;
                 height = height_init;
-                Rotation = rotation_ip.getInitialValue();
-                rotation_ip.Reset();
+                Rotation = rotation_ip.starting;
+                rotation_ip?.Reset();
             }
             else
             {
-                alpha_ip?.Reset(alpha);
-                size_ip?.Reset(size_ip.changeable);
+                alpha_ip?.Reset();
+                size_ip?.Reset();
                 height_init = height;
                 width_init = width;
-                rotation_ip?.Reset(Rotation);
+                rotation_ip?.Reset();
             }
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            if (started)
+            if (animation_running)
             {
                 if (alpha_ip != null)
                 {
-                    alpha = alpha_ip.Update(gameTime);
+                    base.alpha = alpha_ip.Update(gameTime);
                 }
                 if (rotation_ip != null)
                 {
-                    Rotation = rotation_ip.Update(gameTime);
+                    base.Rotation = rotation_ip.Update(gameTime);
                 }
                 if (size_ip != null)
                 {
                     float value = size_ip.Update(gameTime);
                     if (texture == null)
-                        Scale = new Vector2((width_init + value), (width_init + value));
+                        base.Scale = new Vector2((width_init + value), (width_init + value));
                     else
                     {
-                        width = (int)(width_init + value);
-                        height = (int)(height_init + value);
+                        base.width = (int)(width_init + value);
+                        base.height = (int)(height_init + value);
                     }
                 }
-                if(autoreset) { if(finished) ResetAnimation(autoreset_reset_value); }
             }
         }
     }

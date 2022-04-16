@@ -24,8 +24,8 @@ namespace RotationAnimation
 
         protected void Swap()
         {
-            bool started = rotator.started;
-            if (started) rotator.ResetAnimation(false); else rotator.StartAnimation();
+            bool started = rotator.Running;
+            if (started) rotator.ResetAnimation(false); else rotator.ForceStartAnimation();
             button.First.Value.str = started ? "Start" : "Stop";
         }
 
@@ -39,7 +39,7 @@ namespace RotationAnimation
 
             rotator = new InterpolAnimatable(texture, new Vector2(screen_width/2f, 100), new Point(100, 100), Color.Gray);
             rotator.setCenterCoord(true);
-            rotator.setInterpolators(null, null, Interpolator.GetPredefined(Interpolator.Predefined.LinearUp, 0, 10, 0.01f));
+            rotator.setInterpolators(null, null, AdvancedInterpolator.GetLinear(1f, 1f, false));
             rotator.Add(new Animatable(texture, new Vector2(0, 0), new Point(50, 50), Color.Violet));
             rotator.First.Value.Add(new Animatable(content.Load<SpriteFont>("Font"), "0°", new Vector2(10, 10), Color.White));
 
