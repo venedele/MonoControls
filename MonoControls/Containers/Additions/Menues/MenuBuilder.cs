@@ -6,10 +6,10 @@ using System.Threading.Tasks;*/
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using MonoControls.Containers.Base;
-using MonoControls.Containers.Helpers.Animatables;
+using MonoControls.Containers.Additions.Animatables;
 using Microsoft.Xna.Framework;
 
-namespace MonoControls.Containers.Helpers.Menues
+namespace MonoControls.Containers.Additions.Menues
 {
     public static class MenuBuilder 
     {

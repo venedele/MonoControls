@@ -9,7 +9,7 @@ using MonoControls.Inputs.Mouse;
 using Microsoft.Xna.Framework.Graphics;
 using System.Diagnostics;
 
-namespace MonoControls.Containers.Helpers.Animatables
+namespace MonoControls.Containers.Additions.Animatables
 {
     public class Menu : DuplexStateAnimatable
     {

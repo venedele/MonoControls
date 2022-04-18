@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoControls.Containers.Base;
 
-namespace MonoControls.Containers.Helpers.Screens
+namespace MonoControls.Containers.Additions.Screens
 {
     public class SolidBackground : Screen
     {

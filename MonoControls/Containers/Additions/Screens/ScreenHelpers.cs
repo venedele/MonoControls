@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MonoControls.Containers.Base;
 
-namespace MonoControls.Containers.Helpers.Screens
+namespace MonoControls.Containers.Additions.Screens
 {
     public static class ScreenHelpers
     {

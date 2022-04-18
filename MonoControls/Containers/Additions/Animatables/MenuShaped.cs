@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoControls.Containers.Base;
 using MonoControls.Inputs.Mouse;
 
-namespace MonoControls.Containers.Helpers.Animatables
+namespace MonoControls.Containers.Additions.Animatables
 {
     public class MenuShaped : Menu
     {

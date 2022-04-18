@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoControls.Containers.Base;
-using MonoControls.Containers.Helpers.Animatables;
+using MonoControls.Containers.Additions.Animatables;
 using MonoControls.Inputs.Mouse;
 
-namespace MonoControls.Containers.Helpers.Menues
+namespace MonoControls.Containers.Additions.Menues
 {
     public class MenuScreen : Screen
     {

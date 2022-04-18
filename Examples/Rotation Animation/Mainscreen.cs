@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoControls.Containers.Additions.Animatables;
 using MonoControls.Containers.Base;
-using MonoControls.Containers.Helpers.Animatables;
+using MonoControls.Containers.Additions.Animatables;
 using MonoControls.Inputs.Mouse;
 using System;
 using System.Collections.Generic;
@@ -25,7 +25,7 @@ namespace RotationAnimation
         protected void Swap()
         {
             bool started = rotator.Running;
-            if (started) rotator.ResetAnimation(false); else rotator.ForceStartAnimation();
+            if (started) rotator.ResetAnimation(false); else rotator.Rotation = float.MaxValue;
             button.First.Value.str = started ? "Start" : "Stop";
         }
 

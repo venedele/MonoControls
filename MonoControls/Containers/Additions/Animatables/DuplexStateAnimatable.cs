@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoControls.Containers.Base;
 
-namespace MonoControls.Containers.Helpers.Animatables
+namespace MonoControls.Containers.Additions.Animatables
 {
     public class DuplexStateAnimatable : Animatable
     {
