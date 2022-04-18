@@ -20,8 +20,13 @@ namespace MonoControls.Containers.Additions.Animatables
 
         new public float Rotation
         {
-            get { return base.Rotation;  }
+            get { return base.Rotation; }
             set { if (rotation_ip == null) base.Rotation = value; else rotation_ip.setTarget(value); }
+        }
+
+        public float getRotationTarget()
+        {
+            return rotation_ip == null ? base.Rotation : rotation_ip.Target;
         }
 
         //TOOD: Consider overriding instead of new
@@ -29,6 +34,11 @@ namespace MonoControls.Containers.Additions.Animatables
         {
             get { return base.alpha; }
             set { if (alpha_ip == null) base.alpha = value; else alpha_ip.setTarget(value); }
+        }
+
+        public float getAlphaTarget()
+        {
+            return alpha_ip == null ? base.alpha : alpha_ip.Target;
         }
 
         public bool Running
@@ -76,12 +86,12 @@ namespace MonoControls.Containers.Additions.Animatables
         public Animatable setInterpolators(AdvancedInterpolator alpha, AdvancedInterpolator size_scale, AdvancedInterpolator rotation)
         {
             //TODO: Add color
+            alpha?.Reset(this.alpha);
             alpha_ip = alpha;
-            alpha_ip?.Reset(this.alpha);
-            size_ip = size_scale;
             size_ip?.Reset(1f);
-            rotation_ip = rotation;
+            size_ip = size_scale;
             rotation_ip?.Reset(this.Rotation);
+            rotation_ip = rotation;
             return this; 
         }
 

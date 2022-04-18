@@ -9,7 +9,7 @@ using MonoControls.Containers.Base;
 
 namespace MonoControls.Containers.Additions.Animatables
 {
-    public class DuplexStateAnimatable : Animatable
+    public class DuplexStateAnimatable : InterpolAnimatable
     {
         public Texture2D texture_alt { get; private set; }
         public Color color_alt { get; private set; }//new Color(new Vector3(256, -1, -1));
@@ -28,7 +28,6 @@ namespace MonoControls.Containers.Additions.Animatables
 
         public DuplexStateAnimatable(SpriteFont spriteFont, String str, float x, float y, Color color, int containerwidth = 0, int containerheight = 0, float rotation = 0, LinkedList<Animatable> parents = null) :base(spriteFont, str, x, y, color, containerwidth, containerheight, rotation, parents){}
 
-        protected DuplexStateAnimatable(){}
         public DuplexStateAnimatable CreateState(Texture2D texture_alt, Vector4 color_alt, float alpha_alt)
         {
             this.texture_alt = texture_alt;
@@ -70,9 +69,12 @@ namespace MonoControls.Containers.Additions.Animatables
 
                     if(swapped[2])
                     {
-                        alpha += alpha_alt;
-                        alpha_alt = alpha - alpha_alt;
-                        alpha = alpha - alpha_alt;
+                        float alpha_temp = getAlphaTarget();
+                        alpha = alpha_alt;
+                        alpha_alt = alpha_temp;
+                        //alpha += alpha_alt;
+                        //alpha_alt = alpha - alpha_alt;
+                        //alpha = alpha - alpha_alt;
                     }
                     for (int a = 0; a < swapped.Length; a++)
                         swapped[a] = false;
@@ -94,9 +96,12 @@ namespace MonoControls.Containers.Additions.Animatables
                     }
                     if(alpha_alt >-1)
                     {
-                        alpha += alpha_alt;
-                        alpha_alt = alpha - alpha_alt;
-                        alpha = alpha - alpha_alt;
+                        float alpha_temp = getAlphaTarget();
+                        alpha = alpha_alt;
+                        alpha_alt = alpha_temp;
+                        //alpha += alpha_alt;
+                        //alpha_alt = alpha - alpha_alt;
+                        //alpha = alpha - alpha_alt;
                         swapped[2] = true;
                     }
                 }

@@ -48,9 +48,10 @@ namespace RotationAnimation
             rotator.Last.Value.Add(new Animatable(texture, new Vector2(25, 25), new Point(30, 30), Color.Gray, 0.785f));
             rotator.Last.Value.First.Value.setCenterCoord(true);
 
-            button = new DuplexStateAnimatable(texture, screen_width/2f, screen_height-100, 100, 50, Color.Black);
+            button = new DuplexStateAnimatable(texture, screen_width/2f, screen_height-100, 100, 50, 0.5f*Color.Black);
             button.setCenterCoord(true);
-            button.CreateState(null, Color.Green.ToVector4(), 0.8f);
+            button.CreateState(null, Color.Green.ToVector4(), 1f);
+            button.setInterpolators(AdvancedInterpolator.GetExponentialConst(2f), null, null);
             button.Add(new Animatable(content.Load<SpriteFont>("Font"), "Start", new Vector2(10, 10), Color.White));
             this.CreateMouseHandler();
             button.AddMouseEvents(delegate (Animatable sender, MouseKeys keys) { if(keys.left)Swap(); return 0; }, delegate (Animatable sender, bool state) { button.SwapStates(false); return 0; }, mouse);
@@ -65,6 +66,7 @@ namespace RotationAnimation
             {
                 rotator.First.Value.X += 0.3f;
             } else if(rotator.First.Value.X>0) { rotator.First.Value.X -= 0.3f; }
+            button.Update(gameTime);
         }
 
         protected override void Current_Draw(SpriteBatch spriteBatch)
