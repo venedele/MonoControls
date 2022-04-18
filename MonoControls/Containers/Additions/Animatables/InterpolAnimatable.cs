@@ -58,15 +58,19 @@ namespace MonoControls.Containers.Additions.Animatables
             height_init = height;
         }
 
-        public InterpolAnimatable(SpriteFont spriteFont, String str, Vector2 location, Point size, Color color, float rotation = 0, LinkedList<Animatable> parents = null, Game context = null) : base(context, location, size, color, rotation, parents)
+        public InterpolAnimatable(SpriteFont spriteFont, String str, Vector2 location, Color color, int containerwidth = 0, int containerheight = 0, float rotation = 0, LinkedList<Animatable> parents = null, Game context = null) : base(context, location, new Point(containerwidth, containerheight), color, rotation, parents)
         {
             this.spriteFont = spriteFont;
             this.str = str;
-            width_init = 1;
+            width_init = 1; //Font Scaling factor
         }
 
         public InterpolAnimatable(Texture2D texture, float x, float y, int width, int height, Color color, float rotation = 0, LinkedList<Animatable> parents = null, Game context = null)
             : this(texture, new Vector2(x, y), new Point(width, height), color, rotation, parents, context)
+        { }
+
+        public InterpolAnimatable(SpriteFont spriteFont, String str, float x, float y, Color color, int containerwidth = 0, int containerheight = 0, float rotation = 0, LinkedList<Animatable> parents = null, Game context = null)
+            : this(spriteFont, str, new Vector2(x, y), color, containerwidth, containerheight, rotation, parents, context)
         { }
 
         public Animatable setInterpolators(AdvancedInterpolator alpha, AdvancedInterpolator size_scale, AdvancedInterpolator rotation)
