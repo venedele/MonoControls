@@ -20,7 +20,10 @@ namespace RotationAnimation
 
         DuplexStateAnimatable button;
 
-        InterpolAnimatable rotator; 
+        InterpolAnimatable rotator;
+        Animatable rotation_text;
+        Animatable text_back;
+
 
         protected void Swap()
         {
@@ -40,13 +43,16 @@ namespace RotationAnimation
             rotator = new InterpolAnimatable(texture, new Vector2(screen_width/2f, 100), new Point(100, 100), Color.Gray);
             rotator.setCenterCoord(true);
             rotator.setInterpolators(null, null, AdvancedInterpolator.GetLinear(1f, 1f, false));
-            rotator.Add(new Animatable(texture, new Vector2(0, 0), new Point(50, 50), Color.Violet));
-            rotator.First.Value.Add(new Animatable(content.Load<SpriteFont>("Font"), "0°", new Vector2(10, 10), Color.White));
+            text_back = new Animatable(texture, new Vector2(0, 0), new Point(50, 50), Color.Violet);
+            rotator.Add(text_back);
+            rotation_text = new Animatable(content.Load<SpriteFont>("Font"), "0°", new Vector2(10, 10), Color.White);
+            text_back.Add(rotation_text);
 
-            rotator.Add(new Animatable(texture, new Vector2(50, 50), new Point(50, 50), Color.Black*0.8f, 0.785f));
-            rotator.Last.Value.setCenterCoord(true);
-            rotator.Last.Value.Add(new Animatable(texture, new Vector2(25, 25), new Point(30, 30), Color.Gray, 0.785f));
-            rotator.Last.Value.First.Value.setCenterCoord(true);
+            Animatable square = new Animatable(texture, new Vector2(50, 50), new Point(50, 50), Color.Black*0.8f, 0.785f);
+            rotator.Add(square);
+            square.setCenterCoord(true);
+            square.Add(new Animatable(texture, new Vector2(25, 25), new Point(30, 30), Color.Gray, 0.785f));
+            square.First.Value.setCenterCoord(true);
 
             button = new DuplexStateAnimatable(texture, screen_width/2f, screen_height-100, 100, 50, 0.5f*Color.Black);
             button.setCenterCoord(true);
@@ -60,12 +66,12 @@ namespace RotationAnimation
         protected override void Current_Update(GameTime gameTime)
         {
             rotator.Update(gameTime);
-            rotator.First.Value.First.Value.str = Math.Floor(rotator.Rotation*180/Math.PI%360)+ "°";
+            rotation_text.str = Math.Floor(rotator.Rotation*180/Math.PI%360)+ "°";
             KeyboardState keys = Keyboard.GetState();
             if (keys.IsKeyDown(Keys.Space))
             {
-                rotator.First.Value.X += 0.3f;
-            } else if(rotator.First.Value.X>0) { rotator.First.Value.X -= 0.3f; }
+                text_back.X += 0.3f;
+            } else if(text_back.X>0) { text_back.X -= 0.3f; }
             button.Update(gameTime);
         }
 
