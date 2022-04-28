@@ -42,7 +42,7 @@ namespace RotationAnimation
 
             rotator = new InterpolAnimatable(texture, new Vector2(screen_width/2f, 100), new Point(100, 100), Color.Gray);
             rotator.setCenterCoord(true);
-            rotator.setInterpolators(null, null, AdvancedInterpolator.GetLinear(1f, 1f, false), null);
+            rotator.setPropertyInterpolators(null, null, AdvancedInterpolator.GetLinear(1f, 1f, false), null);
             text_back = new Animatable(texture, new Vector2(0, 0), new Point(50, 50), Color.Violet);
             rotator.Add(text_back);
             rotation_text = new Animatable(content.Load<SpriteFont>("Font"), "0°", new Vector2(10, 10), Color.White);
@@ -57,7 +57,7 @@ namespace RotationAnimation
             button = new DuplexStateAnimatable(texture, screen_width/2f, screen_height-100, 100, 50, 0.5f*Color.Black);
             button.setCenterCoord(true);
             button.CreateState(null, Color.Green.ToVector4(), 1f);
-            button.setInterpolators(AdvancedInterpolator.GetExponentialConst(1f), null, null, AdvancedInterpolator.GetExponentialConst(1.85f));
+            button.setPropertyInterpolators(AdvancedInterpolator.GetExponentialConst(1f), null, null, AdvancedInterpolator.GetExponentialConst(1.85f));
             button.Add(new Animatable(content.Load<SpriteFont>("Font"), "Start", new Vector2(10, 10), Color.White));
             this.CreateMouseHandler();
             button.AddMouseEvents(delegate (Animatable sender, MouseKeys keys) { if(keys.left)Swap(); return 0; }, delegate (Animatable sender, bool state) { button.SwapStates(false); return 0; }, mouse);

@@ -88,15 +88,12 @@ namespace MonoControls.Containers.Additions.Animatables
         public InterpolAnimatable(Texture2D texture, Vector2 location, Point size, Color color, float rotation = 0, LinkedList<Animatable> parents = null, Game context = null) : base(context, location, size, color, rotation, parents)
         {
             this.texture = texture;
-            width_init = width;
-            height_init = height;
         }
 
         public InterpolAnimatable(SpriteFont spriteFont, String str, Vector2 location, Color color, int containerwidth = 0, int containerheight = 0, float rotation = 0, LinkedList<Animatable> parents = null, Game context = null) : base(context, location, new Point(containerwidth, containerheight), color, rotation, parents)
         {
             this.spriteFont = spriteFont;
             this.str = str;
-            width_init = 1; //Font Scaling factor
         }
 
         public InterpolAnimatable(Texture2D texture, float x, float y, int width, int height, Color color, float rotation = 0, LinkedList<Animatable> parents = null, Game context = null)
@@ -107,16 +104,12 @@ namespace MonoControls.Containers.Additions.Animatables
             : this(spriteFont, str, new Vector2(x, y), color, containerwidth, containerheight, rotation, parents, context)
         { }
 
-        public Animatable setInterpolators(AdvancedInterpolator alpha, AdvancedInterpolator size_scale, AdvancedInterpolator rotation, AdvancedInterpolator color)
+        public Animatable setPropertyInterpolators(AdvancedInterpolator alpha, AdvancedInterpolator size_scale, AdvancedInterpolator rotation, AdvancedInterpolator color)
         {
             //TODO: Add color
-            alpha?.Reset(this.alpha);
-            alpha_ip = alpha;
-            size_ip?.Reset(1f);
-            size_ip = size_scale;
-            rotation_ip?.Reset(this.Rotation);
-            rotation_ip = rotation;
-
+            setAlphaInterpolator(alpha);
+            setScaleInterpolator(size_scale);
+            setRotationInterpolator(rotation);
             setColorInterpolator(color);
 
             return this; 
@@ -127,6 +120,30 @@ namespace MonoControls.Containers.Additions.Animatables
             color_ip?.Reset(0);
             this.color_ip = color_ip;
             alt = this.color;
+        }
+
+        public void setAlphaInterpolator(AdvancedInterpolator alpha_ip)
+        {
+            alpha_ip?.Reset(this.alpha);
+            this.alpha_ip = alpha_ip;
+        }
+
+        public void setScaleInterpolator(AdvancedInterpolator size_ip)
+        {
+            size_ip?.Reset(1f);
+            this.size_ip = size_ip;
+            if (texture != null)
+            {
+                width_init = width;
+                height_init = height;
+            }
+            else width_init = 1; //Font Scaling factor
+        }
+
+        public void setRotationInterpolator(AdvancedInterpolator rotation_ip)
+        {
+            rotation_ip?.Reset(this.Rotation);
+            this.rotation_ip = rotation_ip;
         }
 
         private bool animation_running = true;
