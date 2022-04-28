@@ -62,7 +62,7 @@ namespace MonoControls.Containers.Additions.Animatables
                     }   
                     if(swapped[1])
                     {
-                        Color temp = color;
+                        Color temp = getColorTarget();
                         color = color_alt;
                         color_alt = temp;
                     }
@@ -89,7 +89,7 @@ namespace MonoControls.Containers.Additions.Animatables
                     }
                     if (changable_color)
                     {
-                        Color temp = color;
+                        Color temp = getColorTarget();
                         color = color_alt;
                         color_alt = temp;
                         swapped[1] = true;

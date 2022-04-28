@@ -14,6 +14,30 @@ namespace MonoControls.Containers.Additions.Animatables
         protected AdvancedInterpolator alpha_ip;
         protected AdvancedInterpolator size_ip;
         protected AdvancedInterpolator rotation_ip;
+        protected AdvancedInterpolator color_ip;
+
+        protected Color alt = Color.Black;
+        protected Color starting = Color.Black;
+        new public Color color
+        {
+            get { return base.color; }
+            set
+            {
+                if (color_ip == null) base.color = value;
+                else
+                {
+                    alt = value;
+                    color_ip.Reset(1);
+                    color_ip.Target = 0;
+                    starting = base.color;
+                }
+            }
+        }
+
+        public Color getColorTarget()
+        {
+            return color_ip == null ? base.color : alt;
+        }
 
         protected int width_init = 0;
         protected int height_init = 0;
@@ -83,7 +107,7 @@ namespace MonoControls.Containers.Additions.Animatables
             : this(spriteFont, str, new Vector2(x, y), color, containerwidth, containerheight, rotation, parents, context)
         { }
 
-        public Animatable setInterpolators(AdvancedInterpolator alpha, AdvancedInterpolator size_scale, AdvancedInterpolator rotation)
+        public Animatable setInterpolators(AdvancedInterpolator alpha, AdvancedInterpolator size_scale, AdvancedInterpolator rotation, AdvancedInterpolator color)
         {
             //TODO: Add color
             alpha?.Reset(this.alpha);
@@ -92,7 +116,17 @@ namespace MonoControls.Containers.Additions.Animatables
             size_ip = size_scale;
             rotation_ip?.Reset(this.Rotation);
             rotation_ip = rotation;
+
+            setColorInterpolator(color);
+
             return this; 
+        }
+
+        public void setColorInterpolator(AdvancedInterpolator color_ip)
+        {
+            color_ip?.Reset(0);
+            this.color_ip = color_ip;
+            alt = this.color;
         }
 
         private bool animation_running = true;
@@ -162,6 +196,12 @@ namespace MonoControls.Containers.Additions.Animatables
                         base.width = (int)(width_init + value);
                         base.height = (int)(height_init + value);
                     }
+                }
+                if(color_ip != null)
+                {
+                    float value = color_ip.Update(gameTime);
+                    Vector3 c = (value * starting.ToVector3()) + ((1-value) * alt.ToVector3());
+                    base.color = new Color(c);
                 }
             }
         }
